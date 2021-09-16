@@ -1,0 +1,207 @@
+body {
+    display: grid;
+    margin: 0;
+    grid-template-columns: 100px 1fr;
+    grid-template-rows: 0.5fr 2fr 1fr;
+    background-color: #27496d;
+    justify-content: stretch;
+    align-content: stretch;
+    max-height: 100vh;
+    padding-bottom: 0;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+h1 {
+    color: whitesmoke;
+}
+h2 {
+    color: #00a8cc;
+    justify-content: center;
+    font-style: italic;
+    font-size: 10px;
+}
+
+h3 {
+    color: #0a043c;
+    font-style: italic;
+}
+
+h5 {
+    color: deeppink;
+    text-decoration: none;
+    font-style: italic;
+    padding-right: 50px;
+}
+h4 {
+    color: deeppink;
+    text-decoration: none;
+    font-style: italic;
+    padding-right: 50px;
+    bottom: 15px;
+    position: absolute;
+}
+
+a:link {
+    text-decoration: none;
+}
+
+/* MAIN LAYOUT */
+
+.homePage {
+    height: 50px;
+
+    color: #00a8cc;
+    justify-self: flex-end;
+    width: auto;
+    grid-column-start: 2;
+    grid-row-start: 1;
+    justify-content: stretch;
+    grid-column-end: -1;
+}
+.navbar {
+    background-color: #0a043c;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 900;
+    height: 50px;
+    top: 400px;
+    grid-column-start: 1;
+    grid-row-start: 1;
+    grid-column-end: -1;
+    color: #00a8cc;
+    justify-items: center;
+    padding-left: 50px;
+}
+
+footer {
+    height: 15px;
+    grid-column-start: 1;
+    grid-column-end: -1;
+    color: deeppink;
+    padding-left: 50px;
+    align-self: end;
+    padding-bottom: 10px;
+    background-color: #0a043c;
+    line-height: 30px;
+}
+
+/* PETITION HANDLEBARS TEMPLATE */
+
+.petitionMain {
+    height: 50vmax;
+    grid-column-start: 1;
+    grid-column-end: -1;
+    padding-left: 50px;
+    padding-right: 50px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 1fr 100px 150px 50px;
+    justify-content: stretch;
+}
+
+.row-one {
+    grid-row-start: 1;
+
+    background-color: darkolivegreen;
+}
+.row-two {
+    grid-row-start: 2;
+    background-color: darkslateblue;
+}
+.row-three {
+    grid-row-start: 3;
+    background-color: darkolivegreen;
+}
+
+.row-four {
+    grid-row-start: 4;
+    background-color: deepskyblue;
+}
+.row-five {
+    grid-row-start: 5;
+    background-color: deeppink;
+}
+img {
+    height: 200px;
+    width: 200px;
+    border-radius: 10px;
+}
+
+#canv {
+    background-color: darkslateblue;
+}
+
+/* 
+.projectsDiv {
+    background-color: #0c7b93;
+    width: 200px;
+    height: 256px;
+    border-radius: 10px;
+    margin: 10px;
+    box-shadow: 0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem #00a8cc,
+        0 0 0.8rem #00a8cc, inset 0 0 1.3rem #00a8cc;
+    text-align: center;
+}
+
+
+
+
+
+
+.sidebar {
+    padding: 50px;
+    padding-top: 30px;
+    width: 250px;
+    grid-column-start: 1;
+    grid-column-end: 1;
+}
+
+
+.sidebarProjects {
+    background-color: #00a8cc;
+    justify-content: right;
+    color: #142850;
+    justify-content: stretch;
+    text-align: right;
+    padding-right: 5px;
+}
+
+.evidenziato {
+    background-color: deeppink;
+}
+
+.description {
+    display: grid;
+    grid-column-start: 1;
+    grid-column-end: -1;
+    grid-template-columns: 0.2fr auto;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+}
+.projectDescription {
+    grid-column-start: 2;
+    width: 100%;
+    justify-content: stretch;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 50px 350px 200px 20px;
+}
+
+.projectName {
+    grid-row-start: 1;
+    align-self: center;
+}
+.descriptionText {
+    grid-row-start: 3;
+    width: 700px;
+    color: #00a8cc;
+}
+
+.imageContainer {
+    grid-row-start: 2;
+}
+
+.imageOnDescription {
+    width: 700px;
+    height: 350px;
+} */
