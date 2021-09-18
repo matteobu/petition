@@ -8,15 +8,12 @@ const db = spicedPg(
 
 module.exports.addID = (first, second, signature) => {
     const q = `INSERT INTO signatures (first, last, signature)
-                     VALUES ($1, $2, $3)`;
+                     VALUES ($1, $2, $3) RETURNING id`;
 
     const params = [first, second, signature];
     return db.query(q, params);
 };
 
-module.exports.listID = (first, second, signature) => {
-    const q = `SELECT (first) FROM signatures`;
-
-    const params = [first, second, signature];
-    return db.query(q, params);
+module.exports.listID = function (q) {
+    return db.query(q);
 };

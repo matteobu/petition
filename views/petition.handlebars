@@ -1,21 +1,58 @@
-<div class="petitionMain">
-    <h2 class="row-one">PLEASE SIGN THIS PETITION TO PREVENT STUPID BIKERZ TO HAVE BIKE CRASH!!</h2>
+<div class="main-container">
+    <div class="top-main">
+        <div class="main-title">
+            <h3>PLEASE SIGN THIS PETITION TO PREVENT STUPID BIKERZ TO HAVE BIKE
+                CRASH!!</h3>
+        </div>
+        <div class="wrong">
 
-    <section class="row-two"><img src="img/bikeLight.jpeg" alt="bike signal ligth"></section>
-   
-    <form  method="post" class="row-three">
-        <input type="text" name="firstName" placeholder="First Name">
-        <input type="text" name="lastName" placeholder="Last Name"> 
-        <button class="submitBTN">SUBMIT</button>
+            {{wrong}}
+        </div>
+    </div>
+    <div class="left-main">
+        <section class="img-container"><img
+                src="img/bikeLight.jpeg"
+                alt="bike signal ligth"
+            />
 
-    </form>
+        </section>
+    </div>
+    <div class="right-main">
+        <form method="post" class="row-three">
+            <input
+                class="input"
+                type="text"
+                name="firstName"
+                placeholder="First Name"
+            />
+            <br />
+            <input
+                class="input"
+                type="text"
+                name="lastName"
+                placeholder="Last Name"
+            />
+            <br />
+            <input
+                class="input"
+                type="text"
+                name="email"
+                placeholder="Electronic mail"
+            />
+            <br />
+            <input class="input" type="text" name="city" placeholder="Yò?" /><br
+            />
 
-    <section class="row-four">
-        <canvas id="canv" width="200" height="50"></canvas>
-    </section>
-    
-    
+            <canvas
+                name="canvas"
+                id="canv"
+                width="500"
+                height="200"
+                style="border:2px solid black"
+            ></canvas>
 
-    <h4>< < click on SUBMIT after your signature > ></h4>
+            <button id="inputBtn">SUBMIT</button>
+        </form>
 
+    </div>
 </div>

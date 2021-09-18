@@ -2,12 +2,11 @@ body {
     display: grid;
     margin: 0;
     grid-template-columns: 100px 1fr;
-    grid-template-rows: 0.5fr 2fr 1fr;
-    background-color: #27496d;
+    grid-template-rows: 0.5fr 2fr 0.5fr;
+    background-color: #b8dfd8;
     justify-content: stretch;
     align-content: stretch;
     max-height: 100vh;
-    padding-bottom: 0;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
 }
 
@@ -22,21 +21,19 @@ h2 {
 }
 
 h3 {
-    color: #0a043c;
-    font-style: italic;
+    font-size: 22px;
 }
 
 h5 {
     color: deeppink;
     text-decoration: none;
     font-style: italic;
-    padding-right: 50px;
+    font-size: 10px;
 }
 h4 {
     color: deeppink;
     text-decoration: none;
     font-style: italic;
-    padding-right: 50px;
     bottom: 15px;
     position: absolute;
 }
@@ -47,161 +44,103 @@ a:link {
 
 /* MAIN LAYOUT */
 
-.homePage {
-    height: 50px;
-
-    color: #00a8cc;
-    justify-self: flex-end;
-    width: auto;
-    grid-column-start: 2;
-    grid-row-start: 1;
-    justify-content: stretch;
-    grid-column-end: -1;
-}
-.navbar {
-    background-color: #0a043c;
-    font-size: 22px;
-    font-style: italic;
-    font-weight: 900;
+.nav {
+    background-color: #233e8b;
     height: 50px;
     top: 400px;
     grid-column-start: 1;
     grid-row-start: 1;
     grid-column-end: -1;
-    color: #00a8cc;
+    display: grid;
+    grid-template-columns: 50% 50%;
+}
+
+.main-logo {
+    color: deeppink;
     justify-items: center;
-    padding-left: 50px;
+    align-self: center;
+    font-size: 22px;
+    font-style: italic;
+    font-weight: 900;
+    padding-left: 40px;
+}
+.nav-link {
+    height: 50px;
+    grid-column-start: 2;
+    display: flex;
+    align-content: flex-end;
+    justify-content: flex-end;
+}
+.home-link {
+    margin: 5px;
+}
+.login-link {
+    width: auto;
+    margin: 5px;
 }
 
 footer {
-    height: 15px;
+    grid-row-start: 3;
     grid-column-start: 1;
     grid-column-end: -1;
     color: deeppink;
-    padding-left: 50px;
     align-self: end;
-    padding-bottom: 10px;
-    background-color: #0a043c;
+    background-color: #233e8b;
     line-height: 30px;
+    padding-left: 40px;
 }
 
 /* PETITION HANDLEBARS TEMPLATE */
 
-.petitionMain {
-    height: 50vmax;
+.main-container {
+    height: 40vmax;
     grid-column-start: 1;
     grid-column-end: -1;
-    padding-left: 50px;
-    padding-right: 50px;
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 50px 1fr 100px 150px 50px;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 100px 0.8fr;
     justify-content: stretch;
+    padding-left: 40px;
 }
 
-.row-one {
-    grid-row-start: 1;
-
-    background-color: darkolivegreen;
+.top-main {
+    grid-column-start: 1;
+    grid-column-end: -1;
+    /* background-color: deeppink; */
+    justify-self: center;
+    align-self: center;
+    color: #233e8b;
 }
-.row-two {
+
+.right-main {
+    display: grid;
+    grid-template-rows: 1fr 1fr;
+}
+.inputBtn,
+button,
+.input {
+    width: 300px;
+    height: 35px;
+    background-color: #e8f6ef;
+    border-radius: 10px;
+    border-style: 0.5px #4c4c6d;
+    margin: 5px;
+}
+
+::placeholder {
+    color: #4c4c6d;
+}
+.img-container {
     grid-row-start: 2;
-    background-color: darkslateblue;
-}
-.row-three {
-    grid-row-start: 3;
-    background-color: darkolivegreen;
-}
-
-.row-four {
-    grid-row-start: 4;
-    background-color: deepskyblue;
-}
-.row-five {
-    grid-row-start: 5;
-    background-color: deeppink;
+    grid-row-end: 4;
 }
 img {
-    height: 200px;
-    width: 200px;
+    height: 450px;
+    width: 100%;
     border-radius: 10px;
 }
 
 #canv {
-    background-color: darkslateblue;
+    margin: 5px;
+    width: 80%;
 }
-
-/* 
-.projectsDiv {
-    background-color: #0c7b93;
-    width: 200px;
-    height: 256px;
-    border-radius: 10px;
-    margin: 10px;
-    box-shadow: 0 0 0.2rem #fff, 0 0 0.2rem #fff, 0 0 2rem #00a8cc,
-        0 0 0.8rem #00a8cc, inset 0 0 1.3rem #00a8cc;
-    text-align: center;
-}
-
-
-
-
-
-
-.sidebar {
-    padding: 50px;
-    padding-top: 30px;
-    width: 250px;
-    grid-column-start: 1;
-    grid-column-end: 1;
-}
-
-
-.sidebarProjects {
-    background-color: #00a8cc;
-    justify-content: right;
-    color: #142850;
-    justify-content: stretch;
-    text-align: right;
-    padding-right: 5px;
-}
-
-.evidenziato {
-    background-color: deeppink;
-}
-
-.description {
-    display: grid;
-    grid-column-start: 1;
-    grid-column-end: -1;
-    grid-template-columns: 0.2fr auto;
-    grid-template-rows: 1fr;
-    justify-content: stretch;
-}
-.projectDescription {
-    grid-column-start: 2;
-    width: 100%;
-    justify-content: stretch;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 50px 350px 200px 20px;
-}
-
-.projectName {
-    grid-row-start: 1;
-    align-self: center;
-}
-.descriptionText {
-    grid-row-start: 3;
-    width: 700px;
-    color: #00a8cc;
-}
-
-.imageContainer {
-    grid-row-start: 2;
-}
-
-.imageOnDescription {
-    width: 700px;
-    height: 350px;
-} */
