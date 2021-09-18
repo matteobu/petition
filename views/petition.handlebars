@@ -19,6 +19,12 @@
     </div>
     <div class="right-main">
         <form method="post" class="row-three">
+            <div class="counter">
+                {{numberOfSigners}}
+                Have signed
+            </div>
+            <br />
+
             <input
                 class="input"
                 type="text"
@@ -42,16 +48,21 @@
             <br />
             <input class="input" type="text" name="city" placeholder="Yò?" /><br
             />
+            <div class="signature">
+                <label for="signature">please sign here: </label>
+                <input
+                    type="hidden"
+                    type="text"
+                    name="signature"
+                    id="signature"
+                    required
+                />
+            </div>
 
-            <canvas
-                name="canvas"
-                id="canv"
-                width="500"
-                height="200"
-                style="border:2px solid black"
-            ></canvas>
+            <canvas name="canv" id="canv"></canvas>
+            <br />
+            <button id="inputBtn">Sign this Petition</button>
 
-            <button id="inputBtn">SUBMIT</button>
         </form>
 
     </div>

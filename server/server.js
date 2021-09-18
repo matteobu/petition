@@ -3,12 +3,11 @@ const db = require("../sql/db.js");
 const path = require("path");
 const express = require("express");
 const hb = require("express-handlebars");
-const cookieSession = require("cookie-session"); // new cookie we'll be using throughout from here on out!
+const cookieSession = require("cookie-session");
 const { cookieSecret } = require("../secrets");
 var app = express();
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
-// const document = require("../views/petition");
 
 app.use(
     express.urlencoded({
@@ -32,9 +31,17 @@ app.get("/", function (req, res) {
     if (req.session.signatureId) {
         res.redirect("/thanks");
     } else {
-        res.render("petition", {
-            layout: "main",
-        });
+        db.listID("SELECT * FROM signatures")
+            .then(function (result) {
+                let numberOfSigners = result.rowCount;
+                res.render("petition", {
+                    numberOfSigners,
+                    layout: "main",
+                });
+            })
+            .catch(function (err) {
+                console.log("ERROR IN LIST ID:>> ", err);
+            });
     }
 });
 
@@ -43,7 +50,7 @@ app.post("/", (req, res) => {
     console.log("req.body :>> ", req.body);
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
-    let signatureVar = "aba";
+    let signatureVar = req.body.signature;
     db.addID(firstName, lastName, signatureVar)
         .then((result) => {
             let id = result.rows[0].id;
