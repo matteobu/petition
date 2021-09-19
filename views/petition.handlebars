@@ -1,8 +1,7 @@
 <div class="main-container">
     <div class="top-main">
         <div class="main-title">
-            <h3>PLEASE SIGN THIS PETITION TO PREVENT STUPID BIKERZ TO HAVE BIKE
-                CRASH!!</h3>
+            <h3>LET'S TEAR DOWN ALL THE EYESORES IN THE WORLD!</h3>
         </div>
         <div class="wrong">
 
@@ -11,9 +10,22 @@
     </div>
     <div class="left-main">
         <section class="img-container"><img
-                src="img/bikeLight.jpeg"
+                src="img/eyesore.jpg"
                 alt="bike signal ligth"
             />
+            <h1>JAIL THE ARCHITECTS!!</h1>
+            <h4>"Beauty perishes in life, but is immortal on the horizon with no
+                eyesores..."
+            </h4>
+
+            <p>Clean-up programme to improve or remove eyesores should be
+                started by local bodies or even national governments. These are
+                frequently called Operation Eyesore. But nowadays they are
+                rarely initiated. So I find myself having to launch this
+                petition so that our voice reaches local governments to take
+                matters into their own hands. I am tired of having to drink my
+                beer on the beach with these eyesores on the horizon.
+            </p>
 
         </section>
     </div>
@@ -21,9 +33,8 @@
         <form method="post" class="row-three">
             <div class="counter">
                 {{numberOfSigners}}
-                Have signed
+                Have signed, be part of them!
             </div>
-            <br />
 
             <input
                 class="input"
@@ -31,23 +42,26 @@
                 name="firstName"
                 placeholder="First Name"
             />
-            <br />
             <input
                 class="input"
                 type="text"
                 name="lastName"
                 placeholder="Last Name"
             />
-            <br />
+            <input class="input" type="text" name="city" placeholder="City" />
             <input
                 class="input"
                 type="text"
                 name="email"
                 placeholder="Electronic mail"
             />
-            <br />
-            <input class="input" type="text" name="city" placeholder="Yò?" /><br
+            <input
+                class="input"
+                type="Password"
+                name="password"
+                placeholder="Password"
             />
+
             <div class="signature">
                 <label for="signature">please sign here: </label>
                 <input
@@ -60,10 +74,36 @@
             </div>
 
             <canvas name="canv" id="canv"></canvas>
-            <br />
+
             <button id="inputBtn">Sign this Petition</button>
+
+            <div class="log-in">
+                If you are already a member, please
+                <a href="/login"> log-in</a>
+            </div>
 
         </form>
 
     </div>
 </div>
+
+{{! LOGIN PAGE
+
+
+<form method="post" class="row-four">
+
+            <input
+                class="input"
+                type="text"
+                name="email"
+                placeholder="Electronic mail"
+            />
+            <input
+                class="input"
+                type="Password"
+                name="password"
+                placeholder="Password"
+            />
+        </form>
+        
+         }}

@@ -46,8 +46,8 @@ app.get("/", function (req, res) {
 });
 
 app.post("/", (req, res) => {
-    console.log("POST REQUEST MADE ON HOME PAGE");
-    console.log("req.body :>> ", req.body);
+    // console.log("POST REQUEST MADE ON HOME PAGE");
+    // console.log("req.body :>> ", req.body);
     let firstName = req.body.firstName;
     let lastName = req.body.lastName;
     let signatureVar = req.body.signature;
@@ -57,7 +57,7 @@ app.post("/", (req, res) => {
             req.session.signatureId = id;
             // if it worked successfully store the signature's id in the cookie and
             // redirect the user to thank-you
-            console.log("YES ITS WORKING");
+            // console.log("YES ITS WORKING");
             res.redirect("/thanks");
         })
         .catch((err) => {
@@ -77,9 +77,17 @@ app.post("/", (req, res) => {
 
 app.get("/thanks", function (req, res) {
     if (req.session.signatureId) {
-        res.render("thanks", {
-            layout: "main",
-        });
+        db.listID("SELECT * FROM signatures")
+            .then(function (result) {
+                let numberOfSigners = result.rowCount;
+                res.render("thanks", {
+                    numberOfSigners,
+                    layout: "main",
+                });
+            })
+            .catch(function (err) {
+                console.log("ERROR IN LIST ID:>> ", err);
+            });
     } else {
         res.redirect("/");
     }
@@ -91,11 +99,11 @@ app.get("/thanks", function (req, res) {
     // should render the thank you template, pass along the user's signature DataURL & number
     // of signers
 
-    console.log("petitionIsFun :>> ", req.session);
+    // console.log("petitionIsFun :>> ", req.session);
 });
 
 app.get("/signers", function (req, res) {
-    console.log("GET REQUEST MADE ON HOME SIGNERS");
+    // console.log("GET REQUEST MADE ON HOME SIGNERS");
 
     // logic to check whether or not the user is allowed to see this page IF not
     // redirect to petition
