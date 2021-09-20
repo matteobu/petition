@@ -20,7 +20,7 @@ app.use(
 app.use(
     cookieSession({
         secret: cookieSecret,
-        maxAge: 1000 * 60 * 5, // five minutes
+        maxAge: 1000 * 60 * 60, // 60 minutes
     })
 );
 
@@ -92,23 +92,38 @@ app.get("/", function (req, res) {
 
 /// PETITION PAGE "/login" GET AND POST ///
 
-// app.get("/login", function (req, res) {
-//     res.render("login", {
-//         layout: "main",
-//     });
-// });
+app.get("/login", function (req, res) {
+    res.render("login", {
+        layout: "main",
+    });
+});
 
-// app.post("/login", function (req, res) {
-//     let hashFromDB = "passwordHardCoded";
+app.post("/login", function (req, res) {
+    if (req.session.loginDone) {
+        res.redirect("/petition");
+    } else {
+        // console.log("req.body :>> ", req.body);
+        // console.log("req.body.password :>> ", req.body.password);
+        let emailFromInput = req.body.email;
+        let pswFromInput = req.body.password;
+        db.listID(emailFromInput)
+            .then(function (result) {
+                console.log("result :>> ", result.rows[0].password);
+                console.log("result :>> ", result.rows[0].id);
 
-//     compare("someUserInputFromTheRequestBody", hashFromDB).then((match) => {
-//         console.log("match :>> ", match);
-//     });
-
-//     res.render("login", {
-//         layout: "main",
-//     });
-// });
+                compare(pswFromInput, result.rows[0].password).then((match) => {
+                    console.log("match :>> ", match);
+                    req.session.loginDone = true;
+                    if (match && req.session.loginDone) {
+                        res.redirect("/petition");
+                    }
+                });
+            })
+            .catch(function (err) {
+                console.log("ERROR IN LIST ID:>> ", err);
+            });
+    }
+});
 
 /// PETITION PAGE "/register" GET AND POST ///
 
@@ -129,7 +144,7 @@ app.post("/register", function (req, res) {
             db.addUser(firstName, lastName, email, hashedPsw).then((result) => {
                 let id = result.rows[0].id;
                 req.session.signatureId = id;
-                res.redirect("/thanks");
+                res.redirect("/petition");
             });
         })
         .catch((err) => {
@@ -141,56 +156,28 @@ app.post("/register", function (req, res) {
                     layout: "main",
                 });
             }
+            console.log("ERROR IN INPUT VALUE:>> ", err);
         });
-
-    // bc.hash(password)
-    //     .then((hashedPsw) => {
-    //         console.log("hasedPw :>> ", hashedPsw);
-    //         return hashedPsw;
-    //     }).
-    //     .catch(function (err) {
-    //         console.log("ERROR IN LIST HASH:>> ", err);
-    //     });
-
-    // console.log("req.body :>> ", hashedPsw);
-
-    // db.addUser(firstName, lastName, email, hashedPsw)
-    //     .then((result) => {
-    //         console.log("result :>> ", result);
-    //         let id = result.rows[0].id;
-    //         req.session.signatureId = id;
-    //         res.redirect("/thanks");
-    //     })
-    //     .catch((err) => {
-    //         if (err) {
-    //             let wrong = `< < < < should not be difficult to write your name and surname, but still something went wrong > > > >
-    //                 `;
-
-    //             res.render("register", {
-    //                 wrong,
-    //                 layout: "main",
-    //             });
-    //         }
-    //     });
 });
 
 /// THANKS PAGE "/thanks" GET AND POST ///
 
 app.get("/thanks", function (req, res) {
-    // if (req.session.signatureId) {
-    //     db.listID("SELECT * FROM signatures")
-    //         .then(function (result) {
-    //             let numberOfSigners = result.rowCount;
-    res.render("thanks", {
-        layout: "main",
-    });
-    //         })
-    //         .catch(function (err) {
-    //             console.log("ERROR IN LIST ID:>> ", err);
-    //         });
-    // } else {
-    //     res.redirect("/");
-    // }
+    if (req.session.signatureId) {
+        db.listID("SELECT * FROM signatures")
+            .then(function (result) {
+                let numberOfSigners = result.rowCount;
+                res.render("thanks", {
+                    numberOfSigners,
+                    layout: "main",
+                });
+            })
+            .catch(function (err) {
+                console.log("ERROR IN LIST ID:>> ", err);
+            });
+    } else {
+        res.redirect("/petition");
+    }
 });
 
 /// PETITION PAGE "/signers" GET AND POST ///

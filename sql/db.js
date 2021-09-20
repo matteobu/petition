@@ -14,9 +14,14 @@ module.exports.addID = (first, last, signature) => {
     return db.query(q, params);
 };
 
-module.exports.listID = function (q) {
-    return db.query(q);
+
+module.exports.listID = (email) => {
+    return db.query(`SELECT password, id FROM users WHERE email = $1`, [email]);
 };
+
+// module.exports.listID = function (q) {
+//     return db.query(q);
+// };
 
 module.exports.addUser = (first, last, email, password) => {
     const q = `INSERT INTO users (first, last, email, password)
