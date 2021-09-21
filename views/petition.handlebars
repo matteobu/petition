@@ -29,14 +29,35 @@
 
         </section>
     </div>
-    <div class="right-main">
+    <div class="right-petition">
         <form method="post" class="row-three">
             <div class="counter">
                 {{numberOfSigners}}
                 Have signed, be part of them!
             </div>
 
-            <input
+            <div class="signature">
+                <label for="signature">please sign here: </label>
+                <input
+                    type="hidden"
+                    type="text"
+                    name="signature"
+                    id="signature"
+                    required
+                />
+            </div>
+
+            <canvas name="canv" id="canv"></canvas>
+
+            <button id="inputBtn">Sign this Petition</button>
+        </form>
+
+    </div>
+</div>
+
+{{! 
+
+             <input
                 class="input"
                 type="text"
                 name="firstName"
@@ -48,34 +69,8 @@
                 name="lastName"
                 placeholder="Last Name"
             />
-            {{!-- <input class="input" type="text" name="city" placeholder="City" /> --}}
-            <input
-                class="input"
-                type="text"
-                name="email"
-                placeholder="Electronic mail"
-            />
-            <input
-                class="input"
-                type="Password"
-                name="password"
-                placeholder="Password"
-            />
+            <input class="input" type="text" name="city" placeholder="City" />
 
-            {{!-- <div class="signature">
-                <label for="signature">please sign here: </label>
-                <input
-                    type="hidden"
-                    type="text"
-                    name="signature"
-                    id="signature"
-                    required
-                />
-            </div> --}}
-
-            {{!-- <canvas name="canv" id="canv"></canvas> --}}
-
-            {{!-- <button id="inputBtn">Sign this Petition</button> --}}
 
             <div class="log-in">
                 If you are already a member, please
@@ -87,23 +82,20 @@
     </div>
 </div>
 
-{{! LOGIN PAGE
-
+LOGIN PAGE
 
 <form method="post" class="row-four">
 
-            <input
-                class="input"
-                type="text"
-                name="email"
-                placeholder="Electronic mail"
-            />
-            <input
-                class="input"
-                type="Password"
-                name="password"
-                placeholder="Password"
-            />
-        </form>
-        
-         }}
+    <input
+        class="input"
+        type="text"
+        name="email"
+        placeholder="Electronic mail"
+    />
+    <input
+        class="input"
+        type="Password"
+        name="password"
+        placeholder="Password"
+    />
+</form> }}
