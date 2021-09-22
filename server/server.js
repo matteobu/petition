@@ -17,10 +17,16 @@ app.use(
         extended: false,
     })
 );
+
+let secrets;
+process.env.NODE_ENV === "production"
+    ? (secrets = process.env)
+    : (secrets = require("../secrets"));
+
 app.use(
     cookieSession({
-        secret: cookieSecret,
-        maxAge: 1000 * 60 * 60 * 24, // 1 day
+        secret: `${secrets.cookieSecret}`,
+        maxAge: 1000 * 60 * 60 * 24 * 14, // 2 weeks
     })
 );
 
@@ -275,8 +281,10 @@ app.get("/signers", function (req, res) {
 app.get("/signers/:city", function (req, res) {
     res.render("signers", {
         layout: "main",
-    }); // const requestedProject = req.params.project;
-    // // console.log("requestedProject :>> ", requestedProject);
+    });
+
+    const requestedProject = req.params.project;
+    console.log("requestedProject :>> ", requestedProject);
 
     // const selectedProject = projects.find(
     //     (item) => item.directory == requestedProject
