@@ -25,7 +25,7 @@ process.env.NODE_ENV === "production"
 
 app.use(
     cookieSession({
-        secret: `${secrets.cookieSecret}`,
+        secret: secrets.cookieSecret,
         maxAge: 1000 * 60 * 60 * 24 * 14, // 2 weeks
     })
 );
