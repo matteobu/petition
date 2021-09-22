@@ -228,4 +228,15 @@ canvas {
 }
 
 .results {
-background-color: deeppink;}
+    background-color: deeppink;
+}
+
+/* EDIT PROFILE */
+
+.delete-account {
+    background-color: darkred;
+}
+
+.delete-sign {
+    background-color: darkseagreen;
+}

@@ -1,0 +1,72 @@
+<div class="main-container">
+    <div class="top-main">
+        <div class="main-title">
+            <h3>Do you want to change some informations?</h3>
+        </div>
+        <div class="wrong">
+
+            {{wrong}}
+        </div>
+    </div>
+
+    <div class="register-main">
+        <form method="post" class="row-three">
+            <input
+                class="input"
+                type="text"
+                name="firstName"
+                placeholder="{{firstName}}"
+            />
+            <input
+                class="input"
+                type="text"
+                name="lastName"
+                placeholder="{{lastName}}"
+            />
+            <input
+                class="input"
+                type="text"
+                name="email"
+                placeholder="{{email}}"
+            />
+            <input
+                class="input"
+                type="Password"
+                name="password"
+                placeholder="Password"
+            />
+            <input
+                class="input"
+                type="text"
+                name="city"
+                placeholder="{{city}}"
+            />
+            <input
+                class="input"
+                type="number"
+                name="age"
+                placeholder="{{age}}"
+            />
+            <input
+                class="input"
+                type="text"
+                name="url"
+                placeholder="Website"
+            />
+
+            <button id="inputBtn" class="delete-sign">UPDATE</button>
+
+            PLEASE REMEMBER THAT THE VALUES TO INPUT SHOULD FOLLOW SPECIFIC
+            RULES
+
+        </form>
+        <form method="post" action="/delete-signature">
+            <button id="inputBtn" class="delete-sign">DELETE YOUR SIGNATURE</button>
+        </form>
+
+        <form method="post" action="/delete-account">
+            <button id="inputBtn" class="delete-sign">DELETE ACCOUNT</button>
+        </form>
+
+    </div>
+</div>

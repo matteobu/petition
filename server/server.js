@@ -75,12 +75,7 @@ app.get("/register", function (req, res) {
 
 app.post("/register", function (req, res) {
     console.log("SESSION VALUE ON POST REGISTER:>> ", req.session);
-
     const { firstName, lastName, email, password } = req.body;
-    // let firstName = req.body.firstName;
-    // let lastName = req.body.lastName;
-    // let email = req.body.email;
-    // let password = req.body.password;
 
     bc.hash(password)
         .then((hashedPsw) => {
@@ -108,26 +103,19 @@ app.post("/register", function (req, res) {
 
 app.get("/profile", function (req, res) {
     console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
-
-    console.log("req.body :>> ", req.session.usersID);
-
     res.render("profile", {
         layout: "main",
     });
 });
 
 app.post("/profile", function (req, res) {
-    console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
-
+    // console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
     const { city, age, url } = req.body;
-    // let city = req.body.city;
-    // let age = req.body.age;
-    // let url = req.body.website;
     const { usersID } = req.session;
 
     db.userProfile(city, age, url, usersID)
         .then((result) => {
-            console.log("result :>> ", result);
+            // console.log("result :>> ", result);
             res.redirect("/petition");
         })
         .catch((err) => {
@@ -138,6 +126,113 @@ app.post("/profile", function (req, res) {
             console.log("Error in post/profile:>> ", err);
         });
 });
+
+/// EDIT PROFILE  "/profile"/edit GET AND POST ///
+
+app.get("/profile/edit", function (req, res) {
+    console.log("SESSION VALUE ON GET EDIT PROFILE:>> ", req.session);
+
+    const { usersID } = req.session;
+
+    if (req.session.loginDone) {
+        db.editProfile(usersID)
+            .then(function (result) {
+                // console.log("result :>> ", result);
+                res.render("edit", {
+                    firstName: result.rows[0].first,
+                    lastName: result.rows[0].last,
+                    email: result.rows[0].email,
+                    age: result.rows[0].age,
+                    city: result.rows[0].city,
+                    url: result.rows[0].url,
+                    layout: "main",
+                });
+            })
+            .catch(function (err) {
+                console.log("ERROR IN LIST ID:>> ", err);
+            });
+    } else {
+        res.redirect("/register");
+    }
+});
+
+app.post("/profile/edit", (req, res) => {
+    const { firstName, lastName, email, password, city, age, url } = req.body;
+    const { usersID } = req.session;
+    if (password) {
+        bc.hash(password)
+            .then((hashedPsw) => {
+                db.updateUser(firstName, lastName, email, hashedPsw).then(
+                    (result) => {
+                        console.log("result :>> ", result);
+                        res.redirect("/petition");
+                    }
+                );
+            })
+
+            .catch((err) => console.log("ERROR IN POST PROFILE EDIT: >>", err));
+    } else {
+        db.updateProfile(age, city, url, usersID)
+            .then((result) => {
+                res.redirect("/petition");
+            })
+            .catch((err) =>
+                console.log("ERROR IN ELSE POST PROFILE EDIT : >> ", err)
+            );
+    }
+});
+
+app.post("/delete-signature", function (req, res) {
+    console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
+    // req.session = null
+    const { usersID } = req.session;
+    db.deleteSignature(usersID)
+        .then((result) => {
+            req.session.signatureDone = false;
+            res.redirect("/petition");
+        })
+        .catch((err) => {
+            if (err) {
+                res.redirect("/profile"); /// CHANGE AGAIN TO "/profile" AT THE MOMENT IS LIKE THAT BECAUSE YOU DID NOT HANDLE YET THE ERROR
+            }
+
+            console.log("Error in post delete signature:>> ", err);
+        });
+});
+
+// app.post("/delete-account", function (req, res) {
+//     const { usersID } = req.session;
+//     Promise.all([
+//         db.deleteSignature(usersID),
+//         db.deleteProfile(usersID),
+//         db.deleteAccount(usersID),
+//     ])
+//         .then((results) => {
+//             console.log(results);
+//         })
+//         .catch((err) => console.log(err));
+
+// console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
+// // req.session = null
+// db.deleteProfile(usersID)
+//     .then((usersID) => {
+//         return usersID;
+//     })
+//     .then((usersID) => {
+//         db.deleteAccount(usersID).then(() => {
+//             req.session = null;
+//             res.redirect("/register");
+//         });
+//     })
+//     .catch((err) => {
+//         if (err) {
+//             console.log("THERE SOME ERROR ");
+//             // res.redirect("/profile/edit"); /// CHANGE AGAIN TO "/profile" AT THE MOMENT IS LIKE THAT BECAUSE YOU DID NOT HANDLE YET THE ERROR
+//         }
+
+//         console.log("Error in post delete profile-account:>> ", err);
+//     });
+// });
 
 /// /login GET AND POST ///
 
@@ -156,10 +251,8 @@ app.get("/login", function (req, res) {
 
 app.post("/login", function (req, res) {
     console.log("SESSION VALUE ON POST LOGIN:>> ", req.session);
-
     const { emailFromInput, pswFromInput } = req.body;
-    // let emailFromInput = req.body.email;
-    // let pswFromInput = req.body.password;
+
     db.listID(emailFromInput)
         .then(function (result) {
             req.session.usersID = result.rows[0].id;
@@ -190,9 +283,9 @@ app.get("/petition", function (req, res) {
     } else if (!req.session.usersID) {
         res.redirect("/register");
     } else if (req.session.loginDone) {
-        db.listID("SELECT * FROM signatures")
+        db.listSigners()
             .then(function (result) {
-                // console.log("result from signatures:>> ", result);
+                // console.log("result :>> ", result);
                 let numberOfSigners = result.rowCount;
                 res.render("petition", {
                     numberOfSigners,
@@ -207,17 +300,13 @@ app.get("/petition", function (req, res) {
 
 app.post("/petition", (req, res) => {
     console.log("SESSION VALUE ON POST PETITION:>> ", req.session);
+    const { usersID } = req.session;
+    const { signature } = req.body;
+    // console.log("req.body :>> ", req.body);
 
-    let signatureID = req.session.usersID;
-    let signatureVar = req.body.signature;
-
-    console.log("object :>> ", req.session.usersID);
-
-    // console.log("req.body :>> ", req.body.signature);
-
-    db.addSignature(signatureVar, signatureID)
+    db.addSignature(signature, usersID)
         .then((result) => {
-            console.log("result :>> ", result);
+            // console.log("result :>> ", result);
             req.session.signatureDone = true;
             res.redirect("/thanks");
         })
@@ -236,7 +325,7 @@ app.get("/thanks", function (req, res) {
     console.log("SESSION VALUE ON GET THANKS:>> ", req.session);
 
     if (req.session.signatureDone) {
-        db.listID("SELECT * FROM signatures")
+        db.listSigners()
             .then(function (result) {
                 let numberOfSigners = result.rowCount;
                 res.render("thanks", {
@@ -255,20 +344,9 @@ app.get("/thanks", function (req, res) {
 /// PETITION PAGE "/signers" GET AND POST ///
 
 app.get("/signers", function (req, res) {
-    // console.log("GET REQUEST MADE ON HOME SIGNERS");
-
-    // logic to check whether or not the user is allowed to see this page IF not
-    // redirect to petition
-    // if user is allowed then get the information on first & last of who sigend the petition
-    // from the db, pass it along to your template render
-    // should render the signers template
     if (req.session.signatureDone) {
         db.signersJoin()
             .then(function (result) {
-                // console.log(result.rows);
-                // console.log("result :>> ", result);
-                // console.log(result.rows[0].first);
-
                 let results = result.rows;
 
                 res.render("signers", {
@@ -285,33 +363,25 @@ app.get("/signers", function (req, res) {
 });
 
 app.get("/signers/:city", function (req, res) {
-    res.render("signers", {
-        layout: "main",
-    });
-
     const requestedCity = req.params.city;
     console.log("requestedProject :>> ", requestedCity);
 
-    
+    if (req.session.signatureDone) {
+        db.cityDB(requestedCity)
+            .then(function (result) {
+                let results = result.rows;
 
-    // const selectedProject = projects.find(
-    //     (item) => item.directory == requestedProject
-    // );
-    // if (!selectedProject) {
-    //     // console.log("NOT FIND THE PROJECT");
-    //     return res.sendStatus(404);
-    // }
-    // // const index = projects.findIndex((number) => number === selectedProject);
-    // res.render("description", {
-
-    //     projects,
-    //     directory: selectedProject.directory,
-    //     name: selectedProject.name,
-    //     description: selectedProject.description,
-    //     image: selectedProject.image,
-    //     class: selectedProject.class,
-    //     layout: "main",
-    // });
+                res.render("city", {
+                    results,
+                    layout: "main",
+                });
+            })
+            .catch(function (err) {
+                console.log("ERROR IN LIST ID:>> ", err);
+            });
+    } else {
+        res.redirect("/register");
+    }
 });
 
 app.listen(process.env.PORT || 8080, () =>
