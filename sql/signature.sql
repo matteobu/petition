@@ -16,13 +16,6 @@
       );
 
 
-CREATE TABLE signatures(
-      id SERIAL PRIMARY KEY,
-      signature TEXT NOT NULL,
-      user_id INTEGER NOT NULL UNIQUE REFERENCES users(id),
-      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-      );
-
 CREATE TABLE user_profiles(
       id SERIAL PRIMARY KEY,
       age INT,
@@ -30,6 +23,15 @@ CREATE TABLE user_profiles(
       url VARCHAR,
       user_id INT NOT NULL UNIQUE REFERENCES users(id)
       );
+
+CREATE TABLE signatures(
+      id SERIAL PRIMARY KEY,
+      signature TEXT NOT NULL,
+      user_id INTEGER NOT NULL UNIQUE REFERENCES users(id),
+      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      );
+
+
 
 
 

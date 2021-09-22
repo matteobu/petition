@@ -1,10 +1,16 @@
 const spicedPg = require("spiced-pg");
-const { dbUserName, dbPassword } = require("../secrets");
 const database = "mustard-petition";
 
-const db = spicedPg(
-    `postgres:${dbUserName}:${dbPassword}@localhost:5432/${database}`
-);
+let db;
+
+if (process.env.DATABASE_URL) {
+    db = process.env.DATABASE_URL;
+} else {
+    const { dbUserName, dbPassword } = require("../secrets");
+    db = spicedPg(
+        `postgres:${dbUserName}:${dbPassword}@localhost:5432/${database}`
+    );
+}
 
 // USER TABLE
 
@@ -41,7 +47,8 @@ module.exports.addSignature = (signature, userID) => {
 // JOIN TABLE
 module.exports.signersJoin = () => {
     return db.query(
-        `SELECT users.id, users.first AS first, users.last AS last, user_profiles.age AS age, user_profiles.city AS city FROM users LEFT OUTER JOIN user_profiles ON users.id = user_profiles.user_id`
+        `SELECT users.id, users.first, users.last, user_profiles.age, user_profiles.city, user_profiles.url FROM users  JOIN signatures ON users.id = signatures.user_id LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id
+        `
     );
 };
 
