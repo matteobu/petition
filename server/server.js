@@ -289,8 +289,10 @@ app.get("/signers/:city", function (req, res) {
         layout: "main",
     });
 
-    const requestedProject = req.params.project;
-    console.log("requestedProject :>> ", requestedProject);
+    const requestedCity = req.params.city;
+    console.log("requestedProject :>> ", requestedCity);
+
+    
 
     // const selectedProject = projects.find(
     //     (item) => item.directory == requestedProject
