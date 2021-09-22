@@ -59,7 +59,7 @@ module.exports.signersJoin = () => {
 // SIGNERS LIST ACCORDING TO A CITY
 module.exports.cityDB = (city) => {
     return db.query(
-        `SELECT users.first, users.last, user_profiles.age, user_profiles.url FROM users JOIN signatures ON users.id = signatures.user_id
+        `SELECT users.first, users.last, user_profiles.age, user_profiles.city, user_profiles.url FROM users JOIN signatures ON users.id = signatures.user_id
         LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id WHERE LOWER(user_profiles.city) = LOWER($1)
         `,
         [city]
@@ -90,8 +90,6 @@ module.exports.updateProfile = (age, city, url) => {
         [age, city, url]
     );
 };
-
-
 
 // DELETE SIGNATURE
 

@@ -1,12 +1,18 @@
 <div class="main-container">
+    <div class="main-title">
+        <h1>HERE IS THE LIST OF THE SIGNERS FROM
+            {{city}}
+
+        </h1>
+    </div>
     <section id="signers">
         {{#results}}
             <div class="results">
 
-                <h6>{{first}}
+                <h6 class="signers">{{first}}
                     {{last}}
                     ({{age}},
-                    <a href="signers/{{city}}">
+                    <a class="signersLink" href="signers/{{city}}">
                         {{city}}
                     </a>)</h6>
 

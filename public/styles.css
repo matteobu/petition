@@ -51,6 +51,9 @@ p {
 a:link {
     text-decoration: none;
 }
+a:visited {
+    color: firebrick;
+}
 
 /* MAIN LAYOUT */
 
@@ -207,9 +210,13 @@ label {
     grid-row-end: 4;
     object-fit: cover;
     justify-self: center;
+    justify-items: center;
     justify-content: center;
+    color: firebrick;
+    text-decoration: none;
+    font-style: italic;
 }
-img {
+w img {
     width: 80%;
     border-radius: 10px;
 }
@@ -228,7 +235,15 @@ canvas {
 }
 
 .results {
-    background-color: deeppink;
+    background-color: #233e8b;
+    color: #b8dfd8;
+}
+
+.signers {
+    color: #b8dfd8;
+}
+.signersLink {
+    color: #b8dfd8;
 }
 
 /* EDIT PROFILE */

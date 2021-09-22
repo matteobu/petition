@@ -102,10 +102,14 @@ app.post("/register", function (req, res) {
 /// PETITION PAGE "/profile" GET AND POST ///
 
 app.get("/profile", function (req, res) {
-    console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
-    res.render("profile", {
-        layout: "main",
-    });
+    if (req.session.signatureDone) {
+        res.redirect("/profile/edit");
+    } else {
+        console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
+        res.render("profile", {
+            layout: "main",
+        });
+    }
 });
 
 app.post("/profile", function (req, res) {
@@ -373,6 +377,7 @@ app.get("/signers/:city", function (req, res) {
 
                 res.render("city", {
                     results,
+                    city: requestedCity,
                     layout: "main",
                 });
             })
