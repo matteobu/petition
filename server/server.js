@@ -4,7 +4,7 @@ const path = require("path");
 const express = require("express");
 const hb = require("express-handlebars");
 const cookieSession = require("cookie-session");
-const { cookieSecret } = require("../secrets");
+// const { cookieSecret } = require("../secrets");
 const bc = require("../sql/bc");
 const { compare } = require("bcryptjs");
 // const { hash } = require("bcryptjs");
@@ -18,14 +18,20 @@ app.use(
     })
 );
 
-let secrets;
-process.env.NODE_ENV === "production"
-    ? (secrets = process.env)
-    : (secrets = require("../secrets"));
+// let secrets;
+// process.env.NODE_ENV === "production"
+//     ? (secrets = process.env)
+//     : (secrets = require("../secrets"));
+// app.use(
+//     cookieSession({
+//         secret: secrets.cookieSecret,
+//         maxAge: 1000 * 60 * 60 * 24 * 14, // 2 weeks
+//     })
+// );
 
 app.use(
     cookieSession({
-        secret: secrets.cookieSecret,
+        secret: "I'm always hungry",
         maxAge: 1000 * 60 * 60 * 24 * 14, // 2 weeks
     })
 );
