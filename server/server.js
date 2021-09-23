@@ -3,11 +3,19 @@ const path = require("path");
 const express = require("express");
 const hb = require("express-handlebars");
 const cookieSession = require("cookie-session");
-// const { cookieSecret } = require("../secrets");
 const bc = require("../sql/bc");
 const { compare } = require("bcryptjs");
-// const { hash } = require("bcryptjs");
+
+const {
+    requireLoggedInUser,
+    requireLoggedOutUser,
+    requireNoSignature,
+    requireSignature,
+} = require("./middleware");
+
+const profileRoutes = require("../routes/profile");
 var app = express();
+
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
 
@@ -17,17 +25,6 @@ app.use(
     })
 );
 
-// let secrets;
-// process.env.NODE_ENV === "production"
-//     ? (secrets = process.env)
-//     : (secrets = require("../secrets"));
-// app.use(
-//     cookieSession({
-//         secret: secrets.cookieSecret,
-//         maxAge: 1000 * 60 * 60 * 24 * 14, // 2 weeks
-//     })
-// );
-
 app.use(
     cookieSession({
         secret: "I'm always hungry",
@@ -35,6 +32,7 @@ app.use(
         sameSite: true,
     })
 );
+app.use(requireLoggedInUser);
 
 const publicPath = path.join(__dirname, "..", "public");
 app.use(express.static("./signers"));
@@ -100,19 +98,18 @@ app.post("/register", function (req, res) {
 });
 
 /// PETITION PAGE "/profile" GET AND POST ///
+app.use("/profile", profileRoutes);
 
-app.get("/profile", function (req, res) {
-    if (req.session.usersID == null) {
-        res.redirect("/register");
-    } else if (req.session.signatureDone) {
-        res.redirect("/profile/edit");
-    } else {
-        console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
-        res.render("profile", {
-            layout: "main",
-        });
-    }
-});
+// app.get("/profile", function (req, res) {
+//     if (req.session.signatureDone) {
+//         res.redirect("/profile/edit");
+//     } else {
+//         console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
+//         res.render("profile", {
+//             layout: "main",
+//         });
+//     }
+// });
 
 app.post("/profile", function (req, res) {
     // console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);

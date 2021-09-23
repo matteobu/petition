@@ -58,6 +58,21 @@ a:visited {
     font-weight: bold;
 }
 
+/* BUTTONS */
+
+/* #signBTN {
+} */
+.input-login,
+#signBTN,
+#login-button {
+    width: 40%;
+    height: 35px;
+    background-color: #e8f6ef;
+    border-radius: 10px;
+    border-style: 0.5px #4c4c6d;
+    margin: 5px;
+    align-self: flex-end;
+}
 /* MAIN LAYOUT */
 
 .nav {
@@ -144,26 +159,12 @@ a:visited {
     justify-self: center;
 }
 
-.row-three {
-    display: flex;
-    flex-direction: column;
-}
-
 /* LOGIN TEMPLATE */
 .right-login {
     grid-column-start: 2;
     grid-column-end: -1;
 }
-.input-login,
-#login-button {
-    width: 40%;
-    height: 35px;
-    background-color: #e8f6ef;
-    border-radius: 10px;
-    border-style: 0.5px #4c4c6d;
-    margin: 5px;
-    align-self: flex-end;
-}
+
 .login-container {
     grid-column-start: 2;
     grid-column-end: -1;
@@ -261,17 +262,13 @@ label {
     font-style: italic;
 }
 img {
-    width: 60%;
+    width: 80%;
     border-radius: 10px;
 }
 
 canvas {
-    width: 95%;
-    height: 200px;
     background-color: #e8f6ef;
     border-radius: 10px;
-    border-style: 0.5px #4c4c6d;
-    margin: 5px;
 }
 
 #signers {

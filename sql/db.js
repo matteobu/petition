@@ -68,7 +68,8 @@ module.exports.cityDB = (city) => {
 // SIGNATURES
 module.exports.getSignature = (usersID) => {
     return db.query(
-        `SELECT signatures.user_id, signature, users.first, users.last FROM signatures JOIN users ON signatures.user_id = users.id`
+        `SELECT signatures.user_id, signature, users.first, users.last FROM signatures JOIN users ON signatures.user_id = users.id`,
+        [usersID]
     );
 };
 
