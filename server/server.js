@@ -32,8 +32,7 @@ app.use(
     cookieSession({
         secret: "I'm always hungry",
         maxAge: 1000 * 60 * 60 * 24 * 14, // 2 weeks
-        sameSite: true
-
+        sameSite: true,
     })
 );
 
@@ -103,7 +102,9 @@ app.post("/register", function (req, res) {
 /// PETITION PAGE "/profile" GET AND POST ///
 
 app.get("/profile", function (req, res) {
-    if (req.session.signatureDone) {
+    if (req.session.usersID == null) {
+        res.redirect("/register");
+    } else if (req.session.signatureDone) {
         res.redirect("/profile/edit");
     } else {
         console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
@@ -246,7 +247,9 @@ app.post("/delete-signature", function (req, res) {
 
 app.get("/login", function (req, res) {
     console.log("SESSION VALUE ON GET LOGIN:>> ", req.session);
-    if (req.session.signatureDone == true) {
+    if (req.session.usersID == null) {
+        res.redirect("/register");
+    } else if (req.session.signatureDone == true) {
         res.redirect("/thanks");
     } else if (req.session.loginDone) {
         res.redirect("/petition");
@@ -331,21 +334,23 @@ app.post("/petition", (req, res) => {
 
 app.get("/thanks", function (req, res) {
     console.log("SESSION VALUE ON GET THANKS:>> ", req.session);
-
-    if (req.session.signatureDone) {
-        db.listSigners()
-            .then(function (result) {
+    const { usersID } = req.session;
+    if (req.session.signatureDone !== true) {
+        res.redirect("/petition");
+    } else {
+        db.getSignature(usersID)
+            .then((result) => {
+                // console.log("result :>> ", result);
                 let numberOfSigners = result.rowCount;
                 res.render("thanks", {
+                    firstName: result.rows[0].first,
+                    img: result.rows[0].signature,
                     numberOfSigners,
-                    layout: "main",
                 });
             })
-            .catch(function (err) {
-                console.log("ERROR IN LIST ID:>> ", err);
-            });
-    } else {
-        res.redirect("/register");
+            .catch((err) =>
+                console.log("error in post /thanks db.getSignature", err)
+            );
     }
 });
 

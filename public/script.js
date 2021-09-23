@@ -39,6 +39,11 @@ function myFunction() {
         x.style.display = "block";
     }
 }
+
+function popUpFunction() {
+    var popup = document.getElementById("myPopup");
+    popup.classList.toggle("show");
+}
 /////// OLD CODE
 // var mousePressed = false;
 // var lastX, lastY;

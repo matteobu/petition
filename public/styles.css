@@ -36,7 +36,7 @@ h4 {
     position: absolute;
 }
 h5 {
-    color: #b8dfd8;
+    color: #233e8b;
 }
 h6 {
     color: firebrick;
@@ -50,15 +50,19 @@ p {
 }
 a:link {
     text-decoration: none;
+    color: firebrick;
+    font-weight: bold;
 }
 a:visited {
     color: firebrick;
+    font-weight: bold;
 }
 
 /* MAIN LAYOUT */
 
 .nav {
-    background-color: #233e8b;
+    /* background-color: #233e8b; */
+    background-color: #b8dfd8;
     height: 50px;
     top: 400px;
     grid-column-start: 1;
@@ -69,7 +73,7 @@ a:visited {
 }
 
 .main-logo {
-    color: #b8dfd8;
+    color: #233e8b;
     justify-items: center;
     align-self: center;
     font-size: 22px;
@@ -79,16 +83,19 @@ a:visited {
     padding-right: 40px;
 }
 .nav-link {
+    color: #233e8b;
     height: 50px;
     grid-column-start: 2;
     display: flex;
     align-content: flex-end;
     justify-content: flex-end;
     padding-right: 40px;
+    margin: 0;
 }
 .home-link {
     margin: 5px;
 }
+
 .login-link {
     width: auto;
     margin: 5px;
@@ -132,7 +139,7 @@ a:visited {
 }
 
 .right-petition {
-    padding-left: 40px;
+    /* padding-left: 40px; */
     display: flex;
     justify-self: center;
 }
@@ -141,8 +148,34 @@ a:visited {
     display: flex;
     flex-direction: column;
 }
+
+/* LOGIN TEMPLATE */
+.right-login {
+    grid-column-start: 2;
+    grid-column-end: -1;
+}
+.input-login,
+#login-button {
+    width: 40%;
+    height: 35px;
+    background-color: #e8f6ef;
+    border-radius: 10px;
+    border-style: 0.5px #4c4c6d;
+    margin: 5px;
+    align-self: flex-end;
+}
+.login-container {
+    grid-column-start: 2;
+    grid-column-end: -1;
+    display: flex;
+    flex-direction: column;
+}
+.loginTitle {
+    justify-self: flex-end;
+    align-self: flex-end;
+}
+
 .inputBtn,
-button,
 .input {
     width: 95%;
     height: 35px;
@@ -185,13 +218,20 @@ button,
 
 /* HOME PAGE TEMPLATE */
 
-.img-hompage {
+.circle-homepage {
+    justify-self: center;
+    width: 80%;
+}
+
+.img-homepage {
     grid-column-start: 1;
     grid-column-end: -1;
     grid-row-start: 2;
     width: 50%;
     justify-self: center;
     justify-content: center;
+    justify-items: center;
+    align-self: center;
 }
 .logIn {
     grid-column-start: 1;
@@ -258,4 +298,103 @@ canvas {
 
 .delete-sign {
     background-color: darkseagreen;
+}
+
+/* POP UP SITUATION */
+
+/* Popup container - can be anything you want */
+.popup {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+/* The actual popup */
+.popup .popuptext {
+    visibility: hidden;
+    width: 160px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 8px 0;
+    position: absolute;
+    z-index: 1;
+    bottom: -250%;
+    left: -50%;
+    margin-left: -80px;
+}
+
+/* Popup arrow */
+.popup .popuptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+}
+
+/* Toggle this class - hide and show the popup */
+.popup .show {
+    visibility: visible;
+    -webkit-animation: fadeIn 1s;
+    animation: fadeIn 1s;
+}
+
+/* Add animation (fade in the popup) */
+@-webkit-keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@media (max-width: 1200px) {
+    h3 {
+        font-size: 20px;
+        margin-top: 0;
+        font-weight: bolder;
+    }
+
+    /* header {
+        height: 70px;
+        padding: 20px;
+    }
+
+    #splash .message {
+        font-size: 20px;
+        transform: none;
+        top: 0;
+        margin-top: 50px;
+    }
+
+    #get-started {
+        margin-top: 20px;
+        width: 250px;
+        line-height: 30px;
+        font-size: 16px;
+        width: 150px;
+    }
+
+    .benefit {
+        width: auto;
+        display: block;
+    } */
 }

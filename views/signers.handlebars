@@ -1,9 +1,13 @@
 <div class="main-container">
     <div class="main-title">
-        <h1>HERE IS THE LIST OF THE SIGNERS
+        <h1>List of all the Signers:
         </h1>
+        <div class="results">
+            <h6 class="signers">FIRST and LAST NAME ( AGE, CITY )</h6>
+        </div>
     </div>
     <section id="signers">
+
         {{#results}}
             <div class="results">
 
@@ -11,6 +15,7 @@
                     {{last}}
                     ({{age}},
                     <a class="signersLink" href="signers/{{city}}">
+
                         {{city}}
                     </a>)</h6>
 

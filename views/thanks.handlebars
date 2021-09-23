@@ -2,24 +2,27 @@
     <div class="top-main">
 
         <div class="main-title">
-            <h1>Thank you for your signature! You are one of the
+            <h1>Thank you
+                {{firstName}}
+                for your signature! You are one of the
                 <a href="/signers">{{numberOfSigners}}</a>
                 Signers!
             </h1>
         </div>
     </div>
     <div class="img-container">
-        <img src="img/eyesoreNO.jpg" alt="eyesore NO THANKS!" />
-         <form method="post" action="/delete-signature">
+        <img src="img/eyesoreCircle.png" alt="eyesore NO THANKS!" />
+        <img src="{{img}}" alt="signature" width="400" height="200" />
+        <form method="post" action="/delete-signature">
             <button id="inputBtn" class="delete-sign">DELETE YOUR SIGNATURE</button>
         </form>
 
         <form method="post" action="/delete-account">
             <button id="inputBtn" class="delete-sign">DELETE ACCOUNT</button>
         </form>
-       <h5 class="listOfSigners"> <a href="/signers">
-                click here to see the list of people who have signed the
-                petition</a></h5>
+        <form method="post" action="/signers">
+            <button id="inputBtn" class="listOfSigners">LIST OF SIGNERS</button>
+        </form>
 
     </div>
 </div>
