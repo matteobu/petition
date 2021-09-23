@@ -68,7 +68,7 @@ module.exports.cityDB = (city) => {
 
 // EDIT PROFILE  GET INFORMATION
 
-module.exports.editProfile = (usersID) => {
+module.exports.profileValue = (usersID) => {
     return db.query(
         `SELECT users.first, users.last, users.email, user_profiles.city, user_profiles.age, user_profiles.url FROM users JOIN signatures ON users.id = signatures.user_id
         LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id WHERE (users.id) = ($1)
@@ -77,17 +77,23 @@ module.exports.editProfile = (usersID) => {
     );
 };
 
-module.exports.updateUser = (first, last, email, password) => {
+module.exports.updateUser = (first, last, email, usersID) => {
     return db.query(
-        `INSERT INTO users (firt, last, email, password) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET first =$1, last =$2, email=$3, password=$4`,
-        [first, last, email, password]
+        `UPDATE users SET first = $1, last= $2, email = $3 WHERE id= $4 RETURNING id`,
+        [first, last, email, usersID]
+    );
+};
+module.exports.updatePassword = (password, usersID) => {
+    return db.query(
+        `UPDATE users SET password = $1 WHERE id= $2 RETURNING id`,
+        [password, usersID]
     );
 };
 
-module.exports.updateProfile = (age, city, url) => {
+module.exports.updateProfile = (age, city, url, usersID) => {
     return db.query(
-        `INSERT INTO user_profiles (age, city, url) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age =$1, city =$2, url=$3`,
-        [age, city, url]
+        `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age =$1, city =$2, url=$3`,
+        [age, city, url, usersID]
     );
 };
 
@@ -107,20 +113,3 @@ module.exports.deleteProfile = (usersID) => {
 module.exports.deleteAccount = (usersID) => {
     return db.query(`DELETE FROM users WHERE (id) = ($1)`, [usersID]);
 };
-// PROFILE TABLE
-
-// CREATE TABLE users(
-//     id SERIAL PRIMARY KEY,
-//     first VARCHAR(255) NOT NULL,
-//     last VARCHAR(255) NOT NULL,
-//     email VARCHAR(255) NOT NULL UNIQUE,
-//     password VARCHAR(255) NOT NULL,
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-//     );
-
-// CREATE TABLE signatures(
-//     id SERIAL PRIMARY KEY,
-//     signature TEXT NOT NULL,
-//     user_id INTEGER NOT NULL UNIQUE REFERENCES users(id),
-//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-//     )

@@ -1,4 +1,3 @@
-// const PORT = 8080;
 const db = require("../sql/db.js");
 const path = require("path");
 const express = require("express");
@@ -139,7 +138,7 @@ app.get("/profile/edit", function (req, res) {
     const { usersID } = req.session;
 
     if (req.session.loginDone) {
-        db.editProfile(usersID)
+        db.profileValue(usersID)
             .then(function (result) {
                 // console.log("result :>> ", result);
                 res.render("edit", {
@@ -164,25 +163,28 @@ app.post("/profile/edit", (req, res) => {
     const { firstName, lastName, email, password, city, age, url } = req.body;
     const { usersID } = req.session;
     if (password) {
-        bc.hash(password)
-            .then((hashedPsw) => {
-                db.updateUser(firstName, lastName, email, hashedPsw).then(
-                    (result) => {
-                        console.log("result :>> ", result);
-                        res.redirect("/petition");
-                    }
+        bc.hash(password).then((hashedPsw) => {
+            Promise.all([
+                db.updatePassword(hashedPsw, usersID),
+                db.updateUser(firstName, lastName, email, usersID),
+                db.updateProfile(age, city, url, usersID),
+            ])
+                .then((results) => {
+                    res.redirect("/petition");
+                })
+                .catch((err) =>
+                    console.log("ERROR IN POST PROFILE EDIT: >>", err)
                 );
-            })
-
-            .catch((err) => console.log("ERROR IN POST PROFILE EDIT: >>", err));
+        });
     } else {
-        db.updateProfile(age, city, url, usersID)
-            .then((result) => {
+        Promise.all([
+            db.updateUser(firstName, lastName, email, usersID),
+            db.updateProfile(age, city, url, usersID),
+        ])
+            .then((results) => {
                 res.redirect("/petition");
             })
-            .catch((err) =>
-                console.log("ERROR IN ELSE POST PROFILE EDIT : >> ", err)
-            );
+            .catch((err) => console.log("ERROR IN POST PROFILE EDIT: >>", err));
     }
 });
 
@@ -192,7 +194,7 @@ app.post("/delete-signature", function (req, res) {
     const { usersID } = req.session;
     db.deleteSignature(usersID)
         .then((result) => {
-            req.session.signatureDone = false;
+            req.session.signatureDone = null;
             res.redirect("/petition");
         })
         .catch((err) => {
