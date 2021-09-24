@@ -11,8 +11,6 @@ module.exports.requireLoggedInUser = function (req, res, next) {
     }
 };
 
-
-
 module.exports.requireLoggedOutUser = function (req, res, next) {
     const { usersID } = req.session;
 
@@ -33,14 +31,13 @@ module.exports.editProfile = function (req, res, next) {
     }
 };
 
-// module.exports.requireLogOut = function (req, res, next) {
-//     const { loginDone } = req.session;
-//     if (!loginDone) {
-//         res.redirect("/login");
-//     } else {
-//         next();
-//     }
-// };
+module.exports.requireLogOut = function (req, res, next) {
+    if (!req.session.signatureDone) {
+        res.redirect("/petition");
+    } else {
+        next();
+    }
+};
 
 module.exports.requireNoSignature = function (req, res, next) {
     if (req.session.signatureDone) {

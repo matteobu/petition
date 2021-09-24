@@ -29,7 +29,7 @@
             />
             <input
                 class="input"
-                type="text"
+                type="email"
                 name="email"
                 placeholder="Email"
                 value="{{email}}"
@@ -62,24 +62,23 @@
                 class="input"
                 type="text"
                 name="url"
-                placeholder="Website"
-                placeholder="{{url}}"
+                placeholder="https:// <== start with"
+                value="{{url}}"
                 autocomplete="off"
             />
 
-            <button id="inputBtn" class="delete-sign">UPDATE</button>
-
-            PLEASE REMEMBER THAT THE VALUES TO INPUT SHOULD FOLLOW SPECIFIC
-            RULES
+            <button id="inputBtn" class="updateBTN">UPDATE</button>
 
         </form>
         <form method="post" action="/delete-signature">
-            <button id="inputBtn" class="delete-sign">DELETE YOUR SIGNATURE</button>
+            <button id="inputBtn" class="deleteBTNsign">DELETE YOUR SIGNATURE</button>
         </form>
 
         <form method="post" action="/delete-account">
-            <button id="inputBtn" class="delete-sign">DELETE ACCOUNT</button>
+            <button id="inputBtn" class="deleteBTNaccount">DELETE ACCOUNT</button>
         </form>
+
+        {{wrong}}
 
     </div>
 </div>

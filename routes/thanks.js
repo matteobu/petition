@@ -27,6 +27,7 @@ router.get("/", requireSignature, function (req, res) {
                 firstName: result.rows[0].first,
                 img: result.rows[0].signature,
                 numberOfSigners,
+                layout: "logout",
             });
         })
         .catch((err) => console.log("error in GET /thanks", err));

@@ -20,7 +20,7 @@ function draw(e) {
 
     ctx.beginPath();
     ctx.lineWidth = 3;
-    ctx.strokeStyle = "firebrick";
+    ctx.strokeStyle = "black";
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
     ctx.lineTo(
@@ -30,7 +30,6 @@ function draw(e) {
     ctx.stroke();
     ctx.closePath();
 }
-
 
 /////// OLD CODE
 // var mousePressed = false;

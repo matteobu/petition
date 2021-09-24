@@ -24,7 +24,7 @@ router.get("/", requireNoSignature, function (req, res) {
             let numberOfSigners = result.rowCount;
             res.render("petition", {
                 numberOfSigners,
-                layout: "main",
+                layout: "logout",
             });
         })
         .catch(function (err) {
@@ -37,20 +37,22 @@ router.post("/", (req, res) => {
     const { usersID } = req.session;
     const { signature } = req.body;
     // console.log("req.body :>> ", req.body);
+    if (!signature) {
+        res.redirect("/petition");
+    } else {
+        db.addSignature(signature, usersID)
+            .then((result) => {
+                // console.log("result :>> ", result);
+                req.session.signatureDone = true;
+                res.redirect("/thanks");
+            })
+            .catch((err) => {
+                res.render("petition", {
+                });
 
-    db.addSignature(signature, usersID)
-        .then((result) => {
-            // console.log("result :>> ", result);
-            req.session.signatureDone = true;
-            res.redirect("/thanks");
-        })
-        .catch((err) => {
-            res.render("petition", {
-                layout: "main",
+                console.log("error in post petition:>> ", err);
             });
-
-            console.log("error in post petition:>> ", err);
-        });
+    }
 });
 
 module.exports = router;

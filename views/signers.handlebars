@@ -1,17 +1,17 @@
-<div class="main-container">
-    <div class="main-title">
+<div class="signers-container">
+    <div class="signers-title">
         <h1>List of all the Signers:
         </h1>
-        <div class="results">
-            <h6 class="signers">FIRST and LAST NAME ( AGE, CITY )</h6>
-        </div>
+    </div>
+    <div class="signers-results">
+        <h6>FIRST and LAST NAME ( AGE, CITY )</h6>
     </div>
     <section id="signers">
 
         {{#results}}
             <div class="results">
 
-                <h6 class="signers">{{first}}
+                <h6 >{{first}}
                     {{last}}
                     ({{age}},
                     <a class="signersLink" href="signers/{{city}}">

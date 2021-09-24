@@ -1,13 +1,8 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../sql/db.js");
-
-const {
-    requireLoggedInUser,
-    requireLoggedOutUser,
-    requireNoSignature,
-    requireSignature,
-} = require("../server/middleware");
+const { requireSignature } = require("../server/middleware");
+router.use(express.static("./signers"));
 
 router.use((req, res, next) => {
     console.log("PETITION ROUTES");
@@ -23,7 +18,7 @@ router.get("/", requireSignature, function (req, res) {
 
             res.render("signers", {
                 results,
-                layout: "main",
+                layout: "logout",
             });
         })
         .catch(function (err) {
@@ -33,7 +28,7 @@ router.get("/", requireSignature, function (req, res) {
 
 router.get("/:city", requireSignature, function (req, res) {
     const requestedCity = req.params.city;
-    console.log("requestedProject :>> ", requestedCity);
+    // console.log("requestedProject :>> ", requestedCity);
 
     db.cityDB(requestedCity)
         .then(function (result) {
@@ -42,13 +37,12 @@ router.get("/:city", requireSignature, function (req, res) {
             res.render("city", {
                 results,
                 city: requestedCity,
-                layout: "main",
+                layout: "logout",
             });
         })
         .catch(function (err) {
             console.log("ERROR IN LIST ID:>> ", err);
         });
-    res.redirect("/register");
 });
 
 module.exports = router;
