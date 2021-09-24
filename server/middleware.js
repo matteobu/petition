@@ -11,15 +11,36 @@ module.exports.requireLoggedInUser = function (req, res, next) {
     }
 };
 
+
+
 module.exports.requireLoggedOutUser = function (req, res, next) {
     const { usersID } = req.session;
 
     if (usersID) {
-        res.redirect("/petition");
+        res.redirect("/profile");
     } else {
         next();
     }
 };
+
+module.exports.editProfile = function (req, res, next) {
+    const { signatureDone } = req.session;
+
+    if (signatureDone) {
+        res.redirect("/profile/edit");
+    } else {
+        next();
+    }
+};
+
+// module.exports.requireLogOut = function (req, res, next) {
+//     const { loginDone } = req.session;
+//     if (!loginDone) {
+//         res.redirect("/login");
+//     } else {
+//         next();
+//     }
+// };
 
 module.exports.requireNoSignature = function (req, res, next) {
     if (req.session.signatureDone) {

@@ -3,28 +3,28 @@ const path = require("path");
 const express = require("express");
 const hb = require("express-handlebars");
 const cookieSession = require("cookie-session");
-const bc = require("../sql/bc");
-const { compare } = require("bcryptjs");
-
 const {
     requireLoggedInUser,
     requireLoggedOutUser,
     requireNoSignature,
     requireSignature,
 } = require("./middleware");
-
+const registerRoutes = require("../routes/register");
+const loginRoutes = require("../routes/login");
 const profileRoutes = require("../routes/profile");
+const petitionRoutes = require("../routes/petition");
+const thanksRoutes = require("../routes/thanks");
+const signersRoutes = require("../routes/signers");
 var app = express();
 
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
-
 app.use(
     express.urlencoded({
         extended: false,
     })
 );
-
+// COOKIE SESSION
 app.use(
     cookieSession({
         secret: "I'm always hungry",
@@ -32,14 +32,11 @@ app.use(
         sameSite: true,
     })
 );
-app.use(requireLoggedInUser);
-
+// PUBLIC PATH
 const publicPath = path.join(__dirname, "..", "public");
+//EXPRESS STATIC
 app.use(express.static("./signers"));
 app.use(express.static(publicPath));
-
-/// GET OR POST REQUEST ///
-
 /// LANDING PAGE "/" GET AND POST ///
 app.get("/", function (req, res) {
     console.log("SESSION VALUE ON GET / :>> ", req.session);
@@ -52,141 +49,15 @@ app.get("/", function (req, res) {
         });
     }
 });
-
-///   /register GET AND POST ///
-
-app.get("/register", function (req, res) {
-    console.log("SESSION VALUE ON GET REGISTER:>> ", req.session);
-
-    if (req.session.signatureDone) {
-        res.redirect("/thanks");
-    } else if (req.session.loginDone) {
-        res.redirect("/petition");
-    } else if (req.session.userID) {
-        res.redirect("/login");
-    } else {
-        res.render("register", {
-            layout: "main",
-        });
-    }
-});
-
-app.post("/register", function (req, res) {
-    console.log("SESSION VALUE ON POST REGISTER:>> ", req.session);
-    const { firstName, lastName, email, password } = req.body;
-
-    bc.hash(password)
-        .then((hashedPsw) => {
-            db.addUser(firstName, lastName, email, hashedPsw).then((result) => {
-                let id = result.rows[0].id;
-                req.session.usersID = id;
-                req.session.loginDone = true;
-                res.redirect("/profile");
-            });
-        })
-        .catch((err) => {
-            if (err) {
-                let wrong = `< < < < should not be difficult to write your name and surname, but still something went wrong > > > >
-                        `;
-                res.render("register", {
-                    wrong,
-                    layout: "main",
-                });
-            }
-            console.log("ERROR IN INPUT VALUE:>> ", err);
-        });
-});
-
-/// PETITION PAGE "/profile" GET AND POST ///
+// MIDDLEWARE LOGIN IN USER
+app.use(requireLoggedInUser);
+// APP_USE ROUTES
 app.use("/profile", profileRoutes);
-
-// app.get("/profile", function (req, res) {
-//     if (req.session.signatureDone) {
-//         res.redirect("/profile/edit");
-//     } else {
-//         console.log("SESSION VALUE ON GET PROFILE:>> ", req.session);
-//         res.render("profile", {
-//             layout: "main",
-//         });
-//     }
-// });
-
-app.post("/profile", function (req, res) {
-    // console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
-    const { city, age, url } = req.body;
-    const { usersID } = req.session;
-
-    db.userProfile(city, age, url, usersID)
-        .then((result) => {
-            // console.log("result :>> ", result);
-            res.redirect("/petition");
-        })
-        .catch((err) => {
-            if (err) {
-                res.redirect("/petition"); /// CHANGE AGAIN TO "/profile" AT THE MOMENT IS LIKE THAT BECAUSE YOU DID NOT HANDLE YET THE ERROR
-            }
-
-            console.log("Error in post/profile:>> ", err);
-        });
-});
-
-/// EDIT PROFILE  "/profile"/edit GET AND POST ///
-
-app.get("/profile/edit", function (req, res) {
-    console.log("SESSION VALUE ON GET EDIT PROFILE:>> ", req.session);
-
-    const { usersID } = req.session;
-
-    if (req.session.loginDone) {
-        db.profileValue(usersID)
-            .then(function (result) {
-                // console.log("result :>> ", result);
-                res.render("edit", {
-                    firstName: result.rows[0].first,
-                    lastName: result.rows[0].last,
-                    email: result.rows[0].email,
-                    age: result.rows[0].age,
-                    city: result.rows[0].city,
-                    url: result.rows[0].url,
-                    layout: "main",
-                });
-            })
-            .catch(function (err) {
-                console.log("ERROR IN LIST ID:>> ", err);
-            });
-    } else {
-        res.redirect("/register");
-    }
-});
-
-app.post("/profile/edit", (req, res) => {
-    const { firstName, lastName, email, password, city, age, url } = req.body;
-    const { usersID } = req.session;
-    if (password) {
-        bc.hash(password).then((hashedPsw) => {
-            Promise.all([
-                db.updatePassword(hashedPsw, usersID),
-                db.updateUser(firstName, lastName, email, usersID),
-                db.updateProfile(age, city, url, usersID),
-            ])
-                .then((results) => {
-                    res.redirect("/petition");
-                })
-                .catch((err) =>
-                    console.log("ERROR IN POST PROFILE EDIT: >>", err)
-                );
-        });
-    } else {
-        Promise.all([
-            db.updateUser(firstName, lastName, email, usersID),
-            db.updateProfile(age, city, url, usersID),
-        ])
-            .then((results) => {
-                res.redirect("/petition");
-            })
-            .catch((err) => console.log("ERROR IN POST PROFILE EDIT: >>", err));
-    }
-});
+app.use("/register", registerRoutes);
+app.use("/login", loginRoutes);
+app.use("/petition", petitionRoutes);
+app.use("/thanks", thanksRoutes);
+app.use("/signers", signersRoutes);
 
 app.post("/delete-signature", function (req, res) {
     console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
@@ -204,6 +75,11 @@ app.post("/delete-signature", function (req, res) {
 
             console.log("Error in post delete signature:>> ", err);
         });
+});
+
+app.get("/logout", function (req, res) {
+    req.session = null;
+    res.redirect("/");
 });
 
 // app.post("/delete-account", function (req, res) {
@@ -239,161 +115,6 @@ app.post("/delete-signature", function (req, res) {
 //         console.log("Error in post delete profile-account:>> ", err);
 //     });
 // });
-
-/// /login GET AND POST ///
-
-app.get("/login", function (req, res) {
-    console.log("SESSION VALUE ON GET LOGIN:>> ", req.session);
-    if (req.session.usersID == null) {
-        res.redirect("/register");
-    } else if (req.session.signatureDone == true) {
-        res.redirect("/thanks");
-    } else if (req.session.loginDone) {
-        res.redirect("/petition");
-    } else {
-        res.render("login", {
-            layout: "main",
-        });
-    }
-});
-
-app.post("/login", function (req, res) {
-    console.log("SESSION VALUE ON POST LOGIN:>> ", req.session);
-    const { emailFromInput, pswFromInput } = req.body;
-
-    db.listID(emailFromInput)
-        .then(function (result) {
-            req.session.usersID = result.rows[0].id;
-            req.session.loginDone = true;
-            compare(pswFromInput, result.rows[0].password).then((match) => {
-                if (match && req.session.loginDone) {
-                    res.redirect("/petition");
-                } else if (match != true) {
-                    let wrong = `< < < < should not be difficult to write your name and surname, but still something went wrong > > > >`;
-                    res.render("login", {
-                        wrong,
-                        layout: "main",
-                    });
-                }
-            });
-        })
-        .catch(function (err) {
-            console.log("ERROR IN LIST ID:>> ", err);
-        });
-});
-
-/// /petition GET AND POST ///
-
-app.get("/petition", function (req, res) {
-    console.log("SESSION VALUE ON GET PETITION:>> ", req.session);
-    if (req.session.signatureDone) {
-        res.redirect("/thanks");
-    } else if (!req.session.usersID) {
-        res.redirect("/register");
-    } else if (req.session.loginDone) {
-        db.listSigners()
-            .then(function (result) {
-                // console.log("result :>> ", result);
-                let numberOfSigners = result.rowCount;
-                res.render("petition", {
-                    numberOfSigners,
-                    layout: "main",
-                });
-            })
-            .catch(function (err) {
-                console.log("ERROR IN LIST ID:>> ", err);
-            });
-    }
-});
-
-app.post("/petition", (req, res) => {
-    console.log("SESSION VALUE ON POST PETITION:>> ", req.session);
-    const { usersID } = req.session;
-    const { signature } = req.body;
-    // console.log("req.body :>> ", req.body);
-
-    db.addSignature(signature, usersID)
-        .then((result) => {
-            // console.log("result :>> ", result);
-            req.session.signatureDone = true;
-            res.redirect("/thanks");
-        })
-        .catch((err) => {
-            res.render("petition", {
-                layout: "main",
-            });
-
-            console.log("error in post petition:>> ", err);
-        });
-});
-
-/// THANKS PAGE "/thanks" GET AND POST ///
-
-app.get("/thanks", function (req, res) {
-    console.log("SESSION VALUE ON GET THANKS:>> ", req.session);
-    const { usersID } = req.session;
-    if (req.session.signatureDone !== true) {
-        res.redirect("/petition");
-    } else {
-        db.getSignature(usersID)
-            .then((result) => {
-                // console.log("result :>> ", result);
-                let numberOfSigners = result.rowCount;
-                res.render("thanks", {
-                    firstName: result.rows[0].first,
-                    img: result.rows[0].signature,
-                    numberOfSigners,
-                });
-            })
-            .catch((err) =>
-                console.log("error in post /thanks db.getSignature", err)
-            );
-    }
-});
-
-/// PETITION PAGE "/signers" GET AND POST ///
-
-app.get("/signers", function (req, res) {
-    if (req.session.signatureDone) {
-        db.signersJoin()
-            .then(function (result) {
-                let results = result.rows;
-
-                res.render("signers", {
-                    results,
-                    layout: "main",
-                });
-            })
-            .catch(function (err) {
-                console.log("ERROR IN LIST ID:>> ", err);
-            });
-    } else {
-        res.redirect("/register");
-    }
-});
-
-app.get("/signers/:city", function (req, res) {
-    const requestedCity = req.params.city;
-    console.log("requestedProject :>> ", requestedCity);
-
-    if (req.session.signatureDone) {
-        db.cityDB(requestedCity)
-            .then(function (result) {
-                let results = result.rows;
-
-                res.render("city", {
-                    results,
-                    city: requestedCity,
-                    layout: "main",
-                });
-            })
-            .catch(function (err) {
-                console.log("ERROR IN LIST ID:>> ", err);
-            });
-    } else {
-        res.redirect("/register");
-    }
-});
 
 app.listen(process.env.PORT || 8080, () =>
     console.log(`The petition server is running 🤟...`)

@@ -156,6 +156,8 @@ a:visited {
 .right-petition {
     /* padding-left: 40px; */
     display: flex;
+    flex-direction: column;
+
     justify-self: center;
 }
 

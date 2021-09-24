@@ -59,8 +59,12 @@ module.exports.signersJoin = () => {
 // SIGNERS LIST ACCORDING TO A CITY
 module.exports.cityDB = (city) => {
     return db.query(
-        `SELECT users.first, users.last, user_profiles.age, user_profiles.city, user_profiles.url FROM users JOIN signatures ON users.id = signatures.user_id
-        LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id WHERE LOWER(user_profiles.city) = LOWER($1)
+        `SELECT users.first, users.last, user_profiles.age, user_profiles.city, user_profiles.url 
+        FROM users 
+        JOIN signatures ON users.id = signatures.user_id
+        LEFT JOIN user_profiles 
+        ON user_profiles.user_id = signatures.user_id 
+        WHERE LOWER(user_profiles.city) = LOWER($1)
         `,
         [city]
     );
@@ -68,7 +72,12 @@ module.exports.cityDB = (city) => {
 // SIGNATURES
 module.exports.getSignature = (usersID) => {
     return db.query(
-        `SELECT signatures.user_id, signature, users.first, users.last FROM signatures JOIN users ON signatures.user_id = users.id`,
+        `SELECT  signature, users.first, users.last 
+        FROM signatures 
+        JOIN users 
+        ON signatures.user_id = users.id 
+        WHERE user_id = ($1)`,
+
         [usersID]
     );
 };
@@ -77,8 +86,13 @@ module.exports.getSignature = (usersID) => {
 
 module.exports.profileValue = (usersID) => {
     return db.query(
-        `SELECT users.first, users.last, users.email, user_profiles.city, user_profiles.age, user_profiles.url FROM users JOIN signatures ON users.id = signatures.user_id
-        LEFT JOIN user_profiles ON user_profiles.user_id = signatures.user_id WHERE (users.id) = ($1)
+        `SELECT users.first, users.last, users.email, user_profiles.city, user_profiles.age, user_profiles.url
+        FROM users 
+        LEFT JOIN signatures
+        ON users.id = signatures.user_id
+        LEFT JOIN user_profiles
+        ON user_profiles.user_id = signatures.user_id
+        WHERE (users.id) = ($1)
         `,
         [usersID]
     );
