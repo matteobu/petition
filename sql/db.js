@@ -12,7 +12,6 @@ if (process.env.DATABASE_URL) {
     );
 }
 
-
 // // USER TABLE
 
 module.exports.addUser = (first, last, email, password) => {
@@ -37,14 +36,12 @@ module.exports.listSignature = (usersID) => {
 // user_profile TABLE
 
 module.exports.userProfile = (city, age, url, userID) => {
-    if (url.startsWith("http")) {
-        const q = `INSERT INTO user_profiles (city, age, url, user_id)
+    const q = `INSERT INTO user_profiles (city, age, url, user_id)
                     VALUES ($1, $2, $3, $4) 
                     RETURNING id`;
 
-        const params = [city, age, url, userID];
-        return db.query(q, params);
-    }
+    const params = [city, age, url, userID];
+    return db.query(q, params);
 };
 
 // SIGNATURES TABLE

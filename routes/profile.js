@@ -22,21 +22,23 @@ router.post("/", function (req, res) {
     const { city, age, url } = req.body;
     const { usersID } = req.session;
     // console.log("req.body.url :>> ", req.body.url);
-    if (url.startsWith("https://") || url.startsWith("http://")) {
-        db.userProfile(city, age, url, usersID)
-            .then((result) => {
-                res.redirect("/petition");
-            })
-            .catch((err) => {
-                if (err) {
-                    res.redirect("/profile");
-                }
-
-                console.log("Error in post/profile:>> ", err);
-            });
+    let checkedURL = url;
+    if (checkedURL.startsWith("https://") || url.startsWith("http://")) {
+        checkedURL = url;
     } else {
-        res.redirect("/petition");
+        checkedURL = "";
     }
+    db.userProfile(city, age, url, usersID)
+        .then((result) => {
+            res.redirect("/petition");
+        })
+        .catch((err) => {
+            if (err) {
+                res.redirect("/profile");
+            }
+
+            console.log("Error in post/profile:>> ", err);
+        });
 });
 
 router.get("/edit", function (req, res) {
