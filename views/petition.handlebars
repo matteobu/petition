@@ -49,6 +49,8 @@
 
             <canvas name="canv" id="canv"></canvas>
             <br />
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
             <button id="signBTN">Sign this Petition</button>
         </form>
         <form method="get" action="/profile/edit">

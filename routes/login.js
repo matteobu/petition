@@ -40,16 +40,16 @@ router.post("/", function (req, res) {
                 req.session.loginDone = true;
 
                 compare(password, result.rows[0].password).then((match) => {
-                    console.log("match :>> ", match);
+                    // console.log("match :>> ", match);
                     if (match && req.session.loginDone) {
                         db.listSignature(req.session.usersID)
                             .then((value) => {
-                                console.log(
-                                    "result.rows[0].signature :>> ",
-                                    value
-                                );
+                                // console.log(
+                                //     "result.rows[0].signature :>> ",
+                                //     value
+                                // );
                                 if (value.rows.length) {
-                                    console.log("LA FIRMA ESISTE");
+                                    // console.log("LA FIRMA ESISTE");
                                     req.session.signatureDone = true;
                                     res.redirect("/thanks");
                                 } else {
@@ -73,7 +73,7 @@ router.post("/", function (req, res) {
             }
         })
         .catch(function (err) {
-            // console.log("ERROR IN POST LOGIN:>> ", err);
+            console.log("ERROR IN POST LOGIN:>> ", err);
         });
 });
 

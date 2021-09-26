@@ -11,14 +11,14 @@ const {
 } = require("../server/middleware");
 
 router.use((req, res, next) => {
-    console.log("PETITION ROUTES");
-    console.log("req.method: ", req.method);
-    console.log("req.url: ", req.url);
+    // console.log("PETITION ROUTES");
+    // console.log("req.method: ", req.method);
+    // console.log("req.url: ", req.url);
     next();
 });
 
 router.get("/", requireLoggedOutUser, function (req, res) {
-    console.log("SESSION VALUE ON GET REGISTER:>> ", req.session);
+    // console.log("SESSION VALUE ON GET REGISTER:>> ", req.session);
 
     res.render("register", {
         layout: "main",
@@ -26,7 +26,7 @@ router.get("/", requireLoggedOutUser, function (req, res) {
 });
 
 router.post("/", function (req, res) {
-    console.log("SESSION VALUE ON POST REGISTER:>> ", req.session);
+    // console.log("SESSION VALUE ON POST REGISTER:>> ", req.session);
     const { firstName, lastName, email, password } = req.body;
 
     bc.hash(password)

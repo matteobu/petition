@@ -5,9 +5,9 @@ const { requireSignature } = require("../server/middleware");
 router.use(express.static("./signers"));
 
 router.use((req, res, next) => {
-    console.log("PETITION ROUTES");
-    console.log("req.method: ", req.method);
-    console.log("req.url: ", req.url);
+    // console.log("PETITION ROUTES");
+    // console.log("req.method: ", req.method);
+    // console.log("req.url: ", req.url);
     next();
 });
 
@@ -22,7 +22,7 @@ router.get("/", requireSignature, function (req, res) {
             });
         })
         .catch(function (err) {
-            console.log("ERROR IN LIST ID:>> ", err);
+            console.log("ERROR IN LIST  SIGNERS JOIN:>> ", err);
         });
 });
 
@@ -41,7 +41,7 @@ router.get("/:city", requireSignature, function (req, res) {
             });
         })
         .catch(function (err) {
-            console.log("ERROR IN LIST ID:>> ", err);
+            console.log("ERROR IN LIST CITY DB:>> ", err);
         });
 });
 

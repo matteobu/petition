@@ -2,7 +2,7 @@ const db = require("../sql/db.js");
 const path = require("path");
 const express = require("express");
 const csurf = require("csurf");
-
+const helmet = require("helmet");
 const hb = require("express-handlebars");
 const cookieSession = require("cookie-session");
 const { requireLoggedInUser } = require("./middleware");
@@ -13,7 +13,6 @@ const petitionRoutes = require("../routes/petition");
 const thanksRoutes = require("../routes/thanks");
 const signersRoutes = require("../routes/signers");
 var app = express();
-app.use(csurf());
 
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
@@ -30,6 +29,15 @@ app.use(
         sameSite: true,
     })
 );
+app.use(function (req, res, next) {
+    res.setHeader("x-frame-options", "deny");
+    next();
+});
+app.use(csurf());
+app.use(function (req, res, next) {
+    res.locals.csrfToken = req.csrfToken();
+    next();
+});
 // PUBLIC PATH
 const publicPath = path.join(__dirname, "..", "public");
 //EXPRESS STATIC
@@ -46,15 +54,8 @@ app.get("/", function (req, res) {
         });
     }
 });
+app.use(helmet());
 
-app.get("/prova", function (req, res) {
-    console.log("IO ESISTO");
-    window.open("https://javascript.info");
-
-    res.render("prova", {
-        layout: "main",
-    });
-});
 // MIDDLEWARE LOGIN IN USER
 app.use(requireLoggedInUser);
 // APP_USE ROUTES

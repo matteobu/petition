@@ -10,18 +10,18 @@ const {
 } = require("../server/middleware");
 
 router.use((req, res, next) => {
-    console.log("PETITION ROUTES");
-    console.log("req.method: ", req.method);
-    console.log("req.url: ", req.url);
+    // console.log("PETITION ROUTES");
+    // console.log("req.method: ", req.method);
+    // console.log("req.url: ", req.url);
     next();
 });
 
 router.get("/", requireSignature, function (req, res) {
-    console.log("SESSION VALUE ON GET THANKS:>> ", req.session);
+    // console.log("SESSION VALUE ON GET THANKS:>> ", req.session);
     const { usersID } = req.session;
     db.getSignature(usersID)
         .then((result) => {
-            console.log("result :>> ", result);
+            // console.log("result :>> ", result);
             let numberOfSigners = result.rowCount;
             res.render("thanks", {
                 firstName: result.rows[0].first,
@@ -30,7 +30,7 @@ router.get("/", requireSignature, function (req, res) {
                 layout: "logout",
             });
         })
-        .catch((err) => console.log("error in GET /thanks", err));
+        .catch((err) => console.log("ERROR IN GET THANKS", err));
 });
 
 module.exports = router;

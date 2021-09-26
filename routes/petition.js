@@ -10,14 +10,14 @@ const {
 } = require("../server/middleware");
 
 router.use((req, res, next) => {
-    console.log("PETITION ROUTES");
-    console.log("req.method: ", req.method);
-    console.log("req.url: ", req.url);
+    // console.log("PETITION ROUTES");
+    // console.log("req.method: ", req.method);
+    // console.log("req.url: ", req.url);
     next();
 });
 
 router.get("/", requireNoSignature, function (req, res) {
-    console.log("SESSION VALUE ON GET PETITION:>> ", req.session);
+    // console.log("SESSION VALUE ON GET PETITION:>> ", req.session);
     db.listSigners()
         .then(function (result) {
             // console.log("result :>> ", result);
@@ -33,7 +33,7 @@ router.get("/", requireNoSignature, function (req, res) {
 });
 
 router.post("/", (req, res) => {
-    console.log("SESSION VALUE ON POST PETITION:>> ", req.session);
+    // console.log("SESSION VALUE ON POST PETITION:>> ", req.session);
     const { usersID } = req.session;
     const { signature } = req.body;
     // console.log("req.body :>> ", req.body);

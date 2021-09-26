@@ -45,7 +45,7 @@ router.get("/edit", function (req, res) {
     const { usersID } = req.session;
     db.profileValue(usersID)
         .then(function (result) {
-            console.log("result :>> ", result);
+            // console.log("result :>> ", result);
             res.render("edit", {
                 firstName: result.rows[0].first,
                 lastName: result.rows[0].last,
@@ -85,7 +85,10 @@ router.post("/edit", (req, res) => {
                     // });
                 })
                 .catch((err) =>
-                    console.log("ERROR IN POST PROFILE EDIT: >>", err)
+                    console.log(
+                        "ERROR IN POST PROFILE EDIT IF STATEMEN: >>",
+                        err
+                    )
                 );
         });
     } else {
@@ -96,7 +99,12 @@ router.post("/edit", (req, res) => {
             .then((results) => {
                 res.redirect("/petition");
             })
-            .catch((err) => console.log("ERROR IN POST PROFILE EDIT: >>", err));
+            .catch((err) =>
+                console.log(
+                    "ERROR IN POST PROFILE EDIT ELSE STATEMENT: >>",
+                    err
+                )
+            );
     }
 });
 
