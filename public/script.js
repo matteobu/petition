@@ -2,6 +2,7 @@ let sig = $("#signature");
 const can1 = $("#canv");
 const can = $("#canv").get(0);
 const ctx = can.getContext("2d");
+const body = $("body");
 
 can1.on("mousedown", function () {
     // console.log("mousemove running");

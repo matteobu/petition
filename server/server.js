@@ -1,6 +1,8 @@
 const db = require("../sql/db.js");
 const path = require("path");
 const express = require("express");
+const csurf = require("csurf");
+
 const hb = require("express-handlebars");
 const cookieSession = require("cookie-session");
 const { requireLoggedInUser } = require("./middleware");
@@ -11,6 +13,7 @@ const petitionRoutes = require("../routes/petition");
 const thanksRoutes = require("../routes/thanks");
 const signersRoutes = require("../routes/signers");
 var app = express();
+app.use(csurf());
 
 app.engine("handlebars", hb());
 app.set("view engine", "handlebars");
@@ -42,6 +45,15 @@ app.get("/", function (req, res) {
             layout: "main",
         });
     }
+});
+
+app.get("/prova", function (req, res) {
+    console.log("IO ESISTO");
+    window.open("https://javascript.info");
+
+    res.render("prova", {
+        layout: "main",
+    });
 });
 // MIDDLEWARE LOGIN IN USER
 app.use(requireLoggedInUser);
