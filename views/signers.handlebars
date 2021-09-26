@@ -8,20 +8,43 @@
     </div>
     <section id="signers">
 
-        {{#results}}
+        {{#each results}}
             <div class="results">
+                {{#if url}}
+                    <h6>
+                        <a target="_blank" href="{{url}}">
+                            {{first}}
+                            {{last}}</a>
+                        (
+                        {{age}},
+                        <a
+                            class="signersLink"
+                            href="signers/{{city}}"
+                        >{{city}}</a>)
+                    </h6>
 
-                <h6 >{{first}}
-                    {{last}}
+                {{else}}
+                    <h6>
+                        {{first}}
+                        {{last}}
+                        (
+                        {{age}},
+                        <a
+                            class="signersLink"
+                            href="signers/{{city}}"
+                        >{{city}}</a>)
+                    </h6>
+                {{/if}}
+
+                {{!-- <h6><a href="{{url}}">
+                        {{first}}
+                        {{last}}</a>
                     ({{age}},
                     <a class="signersLink" href="signers/{{city}}">
-
                         {{city}}
-                    </a>)</h6>
-
+                    </a>)</h6> --}}
             </div>
-        {{/results}}
-
+        {{/each}}
     </section>
 
 </div>

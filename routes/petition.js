@@ -17,10 +17,11 @@ router.use((req, res, next) => {
 });
 
 router.get("/", requireNoSignature, function (req, res) {
-    // console.log("SESSION VALUE ON GET PETITION:>> ", req.session);
+    console.log("SESSION VALUE ON GET PETITION:>> ", req.session);
     db.listSigners()
         .then(function (result) {
             // console.log("result :>> ", result);
+            console.log("RESULT THEN LISTSIGNERS>> ", result);
             let numberOfSigners = result.rowCount;
             res.render("petition", {
                 numberOfSigners,
@@ -47,8 +48,7 @@ router.post("/", (req, res) => {
                 res.redirect("/thanks");
             })
             .catch((err) => {
-                res.render("petition", {
-                });
+                res.render("petition", {});
 
                 console.log("error in post petition:>> ", err);
             });

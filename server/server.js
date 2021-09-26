@@ -46,7 +46,7 @@ const publicPath = path.join(__dirname, "..", "public");
 app.use(express.static(publicPath));
 /// LANDING PAGE "/" GET AND POST ///
 app.get("/", function (req, res) {
-    console.log("SESSION VALUE ON GET / :>> ", req.session);
+    // console.log("SESSION VALUE ON GET / :>> ", req.session);
 
     if (req.session.usersID) {
         res.redirect("/thanks");
@@ -68,7 +68,7 @@ app.use("/thanks", thanksRoutes);
 app.use("/signers", signersRoutes);
 
 app.post("/delete-signature", function (req, res) {
-    console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
+    // console.log("SESSION VALUE ON POST PROFILE:>> ", req.session);
     // req.session = null
     const { usersID } = req.session;
     db.deleteSignature(usersID)

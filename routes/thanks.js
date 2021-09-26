@@ -21,12 +21,12 @@ router.get("/", requireSignature, function (req, res) {
     const { usersID } = req.session;
     db.getSignature(usersID)
         .then((result) => {
-            // console.log("result :>> ", result);
+            console.log("result :>> ", result);
             let numberOfSigners = result.rowCount;
             res.render("thanks", {
                 firstName: result.rows[0].first,
                 img: result.rows[0].signature,
-                numberOfSigners,
+                // numberOfSigners,
                 layout: "logout",
             });
         })

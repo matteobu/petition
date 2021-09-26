@@ -12,17 +12,7 @@ if (process.env.DATABASE_URL) {
     );
 }
 
-// // The if block corresponds to what happens when you are in production (on heroku),
-// as the DATABASE_URL environment variable will be set.
-// The else block corresponds to what happens on your local machine
-// (where no DATABASE_URL environment variable will be set.
-// //     If you look at the if block you will see that you are setting
-// db to the value of process.env.DATABASE_URL , which should be some connection string…
-// //     If db is just a string, the error db.query is not a function makes sense,
-// as db.query  would in fact be undefined.
-// //     You should make sure that db is not just your connection string,
-// but the result of calling spicedPg with that connection string…
-// //     Hope that helps!
+
 // // USER TABLE
 
 module.exports.addUser = (first, last, email, password) => {

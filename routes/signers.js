@@ -12,10 +12,13 @@ router.use((req, res, next) => {
 });
 
 router.get("/", requireSignature, function (req, res) {
+    console.log("req.params.url :>> ", req.params);
+
     db.signersJoin()
         .then(function (result) {
             let results = result.rows;
-
+            console.log("results :>> ", results);
+        
             res.render("signers", {
                 results,
                 layout: "logout",
@@ -28,12 +31,12 @@ router.get("/", requireSignature, function (req, res) {
 
 router.get("/:city", requireSignature, function (req, res) {
     const requestedCity = req.params.city;
+    // const urlWebsite = req.params.url;
     // console.log("requestedProject :>> ", requestedCity);
 
     db.cityDB(requestedCity)
         .then(function (result) {
             let results = result.rows;
-
             res.render("city", {
                 results,
                 city: requestedCity,

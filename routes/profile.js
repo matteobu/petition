@@ -68,7 +68,7 @@ router.post("/edit", (req, res) => {
     if (checkedURL.startsWith("https://") || url.startsWith("http://")) {
         checkedURL = url;
     } else {
-        checkedURL = null;
+        checkedURL = "";
     }
 
     if (password) {
