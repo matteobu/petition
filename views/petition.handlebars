@@ -54,6 +54,8 @@
             <button id="signBTN">Sign this Petition</button>
         </form>
         <form method="get" action="/profile/edit">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
             <button id="signBTN">Edit Your Profile</button>
         </form>
 

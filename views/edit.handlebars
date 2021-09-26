@@ -72,10 +72,14 @@
 
         </form>
         <form method="post" action="/delete-signature">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
             <button id="inputBtn" class="deleteBTNsign">DELETE YOUR SIGNATURE</button>
         </form>
 
         <form method="post" action="/delete-account">
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
             <button id="inputBtn" class="deleteBTNaccount">DELETE ACCOUNT</button>
         </form>
 

@@ -23,10 +23,11 @@
                 placeholder="Password"
                 autocomplete="off"
             />
+            <input type="hidden" name="_csrf" value="{{csrfToken}}" />
+
             <button id="login-button">Login</button>
 
         </form>
-        <input type="hidden" name="_csrf" value="{{csrfToken}}" />
 
         <div class="wrong">
 

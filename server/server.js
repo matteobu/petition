@@ -1,8 +1,8 @@
 const db = require("../sql/db.js");
 const path = require("path");
 const express = require("express");
+// const helmet = require("helmet");
 const csurf = require("csurf");
-const helmet = require("helmet");
 const hb = require("express-handlebars");
 const cookieSession = require("cookie-session");
 const { requireLoggedInUser } = require("./middleware");
@@ -33,6 +33,8 @@ app.use(function (req, res, next) {
     res.setHeader("x-frame-options", "deny");
     next();
 });
+// app.use(helmet());
+
 app.use(csurf());
 app.use(function (req, res, next) {
     res.locals.csrfToken = req.csrfToken();
@@ -54,7 +56,6 @@ app.get("/", function (req, res) {
         });
     }
 });
-app.use(helmet());
 
 // MIDDLEWARE LOGIN IN USER
 app.use(requireLoggedInUser);
