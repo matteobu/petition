@@ -4,7 +4,7 @@ const database = "mustard-petition";
 let db;
 
 if (process.env.DATABASE_URL) {
-    db = process.env.DATABASE_URL;
+    db = spicedPg(process.env.DATABASE_URL);
 } else {
     const { dbUserName, dbPassword } = require("../secrets");
     db = spicedPg(
@@ -12,7 +12,18 @@ if (process.env.DATABASE_URL) {
     );
 }
 
-// USER TABLE
+// // The if block corresponds to what happens when you are in production (on heroku),
+// as the DATABASE_URL environment variable will be set.
+// The else block corresponds to what happens on your local machine
+// (where no DATABASE_URL environment variable will be set.
+// //     If you look at the if block you will see that you are setting
+// db to the value of process.env.DATABASE_URL , which should be some connection string…
+// //     If db is just a string, the error db.query is not a function makes sense,
+// as db.query  would in fact be undefined.
+// //     You should make sure that db is not just your connection string,
+// but the result of calling spicedPg with that connection string…
+// //     Hope that helps!
+// // USER TABLE
 
 module.exports.addUser = (first, last, email, password) => {
     const q = `INSERT INTO users (first, last, email, password)
@@ -122,8 +133,6 @@ module.exports.updatePassword = (password, usersID) => {
 };
 
 module.exports.updateProfile = (age, city, url, usersID) => {
-   
-
     age = age || null;
     return db.query(
         `INSERT INTO user_profiles (age, city, url, user_id) VALUES ($1, $2, $3, $4) ON CONFLICT (user_id) DO UPDATE SET age =$1, city =$2, url=$3`,
